@@ -1,4 +1,4 @@
-import {Activity, Course} from '../types'
+import {Activity, Course} from 'src/types'
 
 const modules = [
   [
@@ -18,6 +18,10 @@ const modules = [
     ],
   ],
   [
+    [
+      'Danish',
+      'Danish dessert danish halvah marzipan pie lemon drops lollipop muffin. Fruitcake ice cream pudding shortbread halvah lollipop caramels gummies bonbon. Carrot cake icing icing topping fruitcake pie cake danish. Sweet roll brownie jelly tootsie roll pastry. Biscuit muffin macaroon jelly topping sesame snaps icing tiramisu marzipan. Brownie cupcake sugar plum cookie icing liquorice candy canes cotton candy sweet roll. Danish gingerbread gummies gummi bears carrot cake cheesecake lollipop. Jujubes fruitcake croissant gummi bears cake sweet gingerbread cake wafer. Fruitcake tootsie roll fruitcake cake topping. Jelly-o candy candy ice cream sweet bonbon wafer chocolate carrot cake. Halvah cookie shortbread tiramisu macaroon shortbread sesame snaps marzipan. Icing chocolate bar lemon drops lollipop brownie candy. Dragée cookie icing lemon drops marshmallow macaroon. Sweet brownie chocolate cake caramels sweet roll cake cookie cake powder. Carrot cake jelly-o cheesecake chocolate bonbon jelly beans. Lollipop dessert gummi bears macaroon toffee. Biscuit sugar plum chocolate gummi bears chocolate cake gingerbread chocolate bar. Apple pie halvah soufflé carrot cake croissant candy canes. Chocolate cake macaroon fruitcake gummi bears bonbon cake danish sweet jelly-o. Biscuit sweet roll wafer tart cookie fruitcake danish. Cake tootsie roll jujubes bonbon ice cream liquorice caramels gingerbread. Topping gummies cake oat cake chocolate bar tiramisu cake.',
+    ],
     [
       'Tootsie',
       'Tootsie roll wafer dessert powder bear claw gingerbread danish danish. Chocolate chocolate caramels topping donut candy. ',

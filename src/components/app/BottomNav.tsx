@@ -6,24 +6,26 @@ import {
   Text,
   usePaletteColor,
 } from '@react-native-material/core'
-import {actions, useAppDispatch, useAppSelector} from '../../store'
-import {Screen} from '../../types'
+import {actions, useAppDispatch, useAppSelector} from 'src/store'
+import {Screen} from 'src/types'
 
 const makeStyles = (primaryColor: PaletteColor, secondaryColor: PaletteColor) =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',
+      zIndex: 10000,
     },
     tab: {
       backgroundColor: primaryColor.main,
       flexGrow: 1,
-      padding: 18,
+      padding: 15,
       alignItems: 'center',
-      borderTopColor: 'transparent',
-      borderTopWidth: 5,
+      borderBottomColor: 'transparent',
+      borderBottomWidth: 7,
     },
     tabSelected: {
-      borderTopColor: secondaryColor.main,
+      borderTopColor: primaryColor.on,
+      borderBottomColor: primaryColor.on,
     },
     tabText: {
       color: primaryColor.on,

@@ -1,3 +1,4 @@
+export type ColorTheme = 'dark' | 'light' | 'system'
 export type Screen = 'course' | 'settings'
 export type ActivityType = 'text'
 export type TextActivity = BaseActivity & {

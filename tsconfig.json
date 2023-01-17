@@ -1,10 +1,12 @@
 // prettier-ignore
+/* Visit https://aka.ms/tsconfig.json to read more about this file */
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",     /* Recommended React Native TSConfig base */
+  "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
-    /* Visit https://aka.ms/tsconfig.json to read more about this file */
-
-    /* Completeness */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true, /* Skip type checking all .d.ts files. */
+    "paths": {
+      // This needs to be mirrored in babel.config.js
+      "src/*": ["src/*"],
+    }
   }
 }
