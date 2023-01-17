@@ -8,17 +8,17 @@
  * @format
  */
 
-import React, {useEffect, useMemo, useRef} from 'react'
-import {Pressable, SafeAreaView, StyleSheet, View} from 'react-native'
+import React, {useMemo} from 'react'
+import {SafeAreaView, StyleSheet, View} from 'react-native'
 
 import {Colors} from 'react-native/Libraries/NewAppScreen'
-import {useIsDarkMode} from '../../hooks/hooks'
+import {useIsDarkMode} from 'src/hooks'
 import BottomNav from './BottomNav'
 import {Provider} from 'react-redux'
 import {configureStore} from '@reduxjs/toolkit'
-import {reducer, useAppSelector} from '../../store'
-import {CourseScreen} from '../screens/CourseScreen'
-import SettingsScreen from '../screens/SettingsScreen'
+import {reducer, useAppSelector} from 'src/store'
+import {CourseScreen} from 'src/components/screens/CourseScreen'
+import SettingsScreen from 'src/components/screens/SettingsScreen'
 
 const makeStyles = (isDarkMode: boolean) =>
   StyleSheet.create({

@@ -1,11 +1,15 @@
 import {useColorScheme} from 'react-native'
-import {demoActivities, demoCourse} from '../fixtures/fixtures'
-import {useAppSelector} from '../store'
+import {demoActivities, demoCourse} from 'src/fixtures'
+import {useAppSelector} from 'src/store'
 import {ForwardedRef, useEffect, useMemo, useRef} from 'react'
-import {Activity, Module, TextActivity} from '../types'
+import {Module, TextActivity} from 'src/types'
 
 export const useIsDarkMode = () => useColorScheme() === 'dark'
-export const useCurrentCourse = () => demoCourse
+
+// temporarily use fixtures for course and activities
+export const useCourse = () => demoCourse
+export const useActivities = () => demoActivities
+
 const invalidActivity: TextActivity = {
   id: -1,
   moduleId: -1,
@@ -13,21 +17,38 @@ const invalidActivity: TextActivity = {
   title: 'Invalid Activity',
   text: '',
 }
+
 const invalidModule: Module = {id: -1, title: 'Invalid Module', activities: []}
+
 export const useCurrentActivity = () => {
   const {currentActivityId} = useAppSelector(state => state.progress)
-  const currentActivity = useMemo(
-    () =>
-      demoActivities.find(a => a.id == currentActivityId) || invalidActivity,
-    [currentActivityId],
+  const course = useCourse()
+  const activities = useActivities()
+  const [activity, idx] = useMemo(() => {
+    const idx = activities.findIndex(a => a.id == currentActivityId)
+    const activity = idx < 0 ? invalidActivity : activities[idx]
+    return [activity, idx]
+  }, [activities, currentActivityId])
+  const module = useMemo(
+    () => course.modules.find(m => m.id == activity?.moduleId) || invalidModule,
+    [course, activity],
   )
-  const currentModule = useMemo(
-    () =>
-      demoCourse.modules.find(m => m.id == currentActivity?.moduleId) ||
-      invalidModule,
-    [currentActivity],
-  )
-  return [currentActivity, currentModule] as [Activity, Module]
+  const [prev, next] = useMemo(() => {
+    if (idx < 0) {
+      return [null, null]
+    }
+    const prev = idx > 0 ? activities[idx - 1] : null
+    const nextId = idx + 1
+    const next = nextId < activities.length ? activities[nextId] : null
+    return [prev, next]
+  }, [activities, idx])
+  return {
+    activity,
+    idx,
+    module,
+    prev,
+    next,
+  }
 }
 export const useForwardRef = <T,>(
   ref: ForwardedRef<T>,

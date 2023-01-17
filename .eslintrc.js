@@ -11,6 +11,7 @@ module.exports = {
         'no-shadow': 'off',
         'no-undef': 'off',
         semi: 0,
+        eqeqeq: 0,
       },
     },
     {

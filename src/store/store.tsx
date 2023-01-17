@@ -7,10 +7,14 @@ import {
   ThunkDispatch,
   TypedStartListening,
 } from '@reduxjs/toolkit'
-import {Screen} from '../types'
+import {ColorTheme, Screen} from 'src/types'
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux'
 import {DrawerState} from 'react-native-gesture-handler/DrawerLayout'
-import {demoCourse} from '../fixtures/fixtures'
+import {demoCourse} from 'src/fixtures'
+
+/******* UI State *******/
+// Not persisted.
+// Contains state of various UI components.
 
 const drawerStatus = {
   drawerState: 'Idle' as DrawerState,
@@ -53,10 +57,15 @@ export const uiSlice = createSlice({
   },
 })
 
-export const progressState = createSlice({
+/******* Progress State *******/
+// Persisted.
+// Contains state information for the progress through the course.
+const initialActivityId = demoCourse.modules[0].activities[0].id
+export const progressSlice = createSlice({
   name: 'progress',
   initialState: {
-    currentActivityId: demoCourse.modules[0].activities[0].id,
+    currentActivityId: initialActivityId,
+    highestActivityId: initialActivityId,
   },
   reducers: {
     setCurrentActivityId: (
@@ -65,18 +74,43 @@ export const progressState = createSlice({
     ) => ({
       ...state,
       currentActivityId,
+      highestActivityId:
+        currentActivityId > state.highestActivityId
+          ? currentActivityId
+          : state.highestActivityId,
+    }),
+  },
+})
+
+/******* Settings State *******/
+// Persisted.
+// Contains user controlled settings.
+export const settingsSlice = createSlice({
+  name: 'settings',
+  initialState: {
+    colorTheme: 'system' as ColorTheme,
+  },
+  reducers: {
+    setColorTheme: (
+      state,
+      {payload: colorTheme}: PayloadAction<ColorTheme>,
+    ) => ({
+      ...state,
+      colorTheme,
     }),
   },
 })
 
 export const actions = {
   ...uiSlice.actions,
-  ...progressState.actions,
+  ...progressSlice.actions,
+  ...settingsSlice.actions,
 }
 
 export const reducer = combineReducers({
   [uiSlice.name]: uiSlice.reducer,
-  [progressState.name]: progressState.reducer,
+  [progressSlice.name]: progressSlice.reducer,
+  [settingsSlice.name]: settingsSlice.reducer,
 })
 
 export type RootState = ReturnType<typeof reducer>
