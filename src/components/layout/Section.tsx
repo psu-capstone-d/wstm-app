@@ -23,14 +23,14 @@ const makeStyles = (isDarkMode: boolean) =>
 
 const Section: React.FC<
   PropsWithChildren<{
-    title: string
+    title?: string
   }>
 > = ({children, title}) => {
   const isDarkMode = useColorScheme() === 'dark'
   const styles = useMemo(() => makeStyles(isDarkMode), [isDarkMode])
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      {title && <Text style={styles.title}>{title}</Text>}
       <Text style={styles.description}>{children}</Text>
     </View>
   )
