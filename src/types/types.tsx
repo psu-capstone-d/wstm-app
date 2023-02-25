@@ -7,11 +7,11 @@ export type BaseActivity = {
   type: ActivityType
   id: number
   moduleId: number
+  title: string
 }
 
 export type TextActivity = BaseActivity & {
   type: 'text'
-  title: string
   text: string
 }
 

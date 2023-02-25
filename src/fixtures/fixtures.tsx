@@ -604,6 +604,17 @@ const idGenerator = () => {
 const [moduleIdGenerator, lastModuleId] = idGenerator()
 const [activityIdGenerator] = idGenerator()
 
+const titleGenerator = () => {
+    let questionNum = [0,0,0];
+    return [(activity: Activity, i: number) => {
+        if (activity.type == "question") {
+            questionNum[i] += 1;
+            return "Question " + questionNum[i].toString();
+        }
+    }];
+};
+const [questionActivityTitleGenerator] = titleGenerator();
+
 export const demoCourse: Course = {
     name: 'Demo Course',
     modules: modules.map<Module>(({title,activities}, i) => ({
@@ -613,6 +624,7 @@ export const demoCourse: Course = {
             ...activity,
             id: activityIdGenerator(),
             moduleId: lastModuleId(),
+            title: questionActivityTitleGenerator(activity, i),
         })),
     })) as Module[],
 }
