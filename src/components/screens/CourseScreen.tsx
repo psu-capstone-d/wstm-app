@@ -23,6 +23,12 @@ const makeStyles = (isDarkMode: boolean) =>
       backgroundColor: isDarkMode ? Colors.black : Colors.white,
       flex: 1,
     },
+    scrollViewContainer: {
+      flex: 1
+    },
+    lowerView: {
+      height: 90,
+    },
     highlight: {
       fontWeight: '700',
     },
@@ -123,37 +129,42 @@ export const CourseScreen = () => {
   )
 
   const mainArea = (
-    <ScrollView
-      key="main"
-      contentInsetAdjustmentBehavior="automatic"
-      style={styles.container}>
-      <View style={styles.container}>
-        {activity.type == 'text' && <TextContent activity={activity} />}
-        {activity.type == 'question' && (
-          <QuestionContent
-            activity={activity}
-            onComplete={() => setReadyToAdvance(true)}
-          />
+    <View style={styles.container}>
+      <View style={styles.scrollViewContainer}>
+        <ScrollView
+          key="main"
+          contentInsetAdjustmentBehavior="automatic">
+          <View style={styles.container}>
+            {activity.type == 'text' && <TextContent activity={activity} />}
+            {activity.type == 'question' && (
+              <QuestionContent
+                activity={activity}
+                onComplete={() => setReadyToAdvance(true)}
+              />
+            )}
+          </View>
+        </ScrollView>
+      </View>
+      <View style={styles.lowerView}>
+        {readyToAdvance && next && (
+          <View style={styles.advance}>
+            <Button
+              contentContainerStyle={styles.advanceButton}
+              title=""
+              uppercase={false}
+              trailing={props => (
+                <Icon name="chevron-right" {...props} size={30} />
+              )}
+              onPress={() => dispatch(actions.setCurrentActivityId(next.id))}
+            />
+          </View>
         )}
       </View>
-    </ScrollView>
-  )
+    </View>
+  );
 
   const bottomArea = (
     <>
-      {readyToAdvance && next && (
-        <View style={styles.advance}>
-          <Button
-            contentContainerStyle={styles.advanceButton}
-            title=""
-            uppercase={false}
-            trailing={props => (
-              <Icon name="chevron-right" {...props} size={30} />
-            )}
-            onPress={() => dispatch(actions.setCurrentActivityId(next.id))}
-          />
-        </View>
-      )}
       {isCourseComplete && (
         <AppBar
           title={`${course.name} Complete!`}
