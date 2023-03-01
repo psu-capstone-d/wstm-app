@@ -721,7 +721,7 @@ const [moduleIdGenerator, lastModuleId] = idGenerator()
 const [activityIdGenerator] = idGenerator()
 
 const titleGenerator = () => {
-    let questionNum = [0, 0, 0];
+    let questionNum = [0,0,0];
     return [(activity: Activity, i: number) => {
         if (activity.type == "question") {
             questionNum[i] += 1;
