@@ -809,13 +809,13 @@ const [moduleIdGenerator, lastModuleId] = idGenerator()
 const [activityIdGenerator] = idGenerator()
 
 const titleGenerator = (moduleNum: number) => {
-    let questionNum = Array(moduleNum).fill(0)
-    return [(activity: Activity, i: number) => {
+    const questionNum = Array(moduleNum).fill(0)
+    return [(i: number) => {
         questionNum[i] += 1;
-        return "Question " + questionNum[i].toString();
+        return `Question ${questionNum[i]}`;
     }];
 };
-const [questionActivityTitleGenerator] = titleGenerator(modules.length);
+const [questionTitleGenerator] = titleGenerator(modules.length);
 
 export const demoCourse: Course = {
     name: 'Demo Course',
@@ -823,13 +823,13 @@ export const demoCourse: Course = {
         id: moduleIdGenerator(),
         title: title,
         activities: (activities as Activity[]).map(activity => {
-            const a: Activity =  ({
+            const a: Activity = {
                 ...activity,
                 id: activityIdGenerator(),
                 moduleId: lastModuleId(),
-            })
+            }
             if (activity.type == 'question') {
-                a.title = questionActivityTitleGenerator(activity, i)
+                a.title = questionTitleGenerator(i)
             }
             return a
         }),
