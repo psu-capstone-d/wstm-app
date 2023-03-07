@@ -151,6 +151,8 @@ const modules: ModuleFixtures[] = [
         ],
       },
     ],
+  },
+  {
     title: 'Phishing',
     activities: [
       {
