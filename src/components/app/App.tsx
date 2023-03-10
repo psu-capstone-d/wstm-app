@@ -19,6 +19,7 @@ import {configureStore} from '@reduxjs/toolkit'
 import {reducer, useAppSelector} from 'src/store'
 import {CourseScreen} from 'src/components/screens/CourseScreen'
 import SettingsScreen from 'src/components/screens/SettingsScreen'
+import { listenerMiddleware } from "src/listeners/listeners";
 
 const makeStyles = (isDarkMode: boolean) =>
   StyleSheet.create({
@@ -42,7 +43,7 @@ const makeStyles = (isDarkMode: boolean) =>
 
 const store = configureStore({
   reducer,
-  // middleware: getDefaultMiddleware => getDefaultMiddleware().concat(listeners),
+  middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(listenerMiddleware.middleware),
 })
 
 const App = () => {

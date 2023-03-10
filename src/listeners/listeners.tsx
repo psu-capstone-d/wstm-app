@@ -1,22 +1,30 @@
-import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
-import { actions } from "src/store";
+import { createListenerMiddleware, isAnyOf, TypedStartListening } from "@reduxjs/toolkit";
+import { actions, AppStartListening} from "src/store";
 import RNFS from "react-native-fs";
 
-const listenerMiddleware = createListenerMiddleware();
+export const listenerMiddleware = createListenerMiddleware();
+export const startAppListening = listenerMiddleware.startListening as AppStartListening
 
-listenerMiddleware.startListening({
+startAppListening({
   matcher: (isAnyOf(actions.setCurrentActivityId)),
   effect: async (action, api) => {
-    const path = RNFS.DocumentDirectoryPath + '/wstm-progress.txt';
 
-    const currentId = api.getState()
+    console.log('beginning effect execution');
 
-    RNFS.writeFile(path, currentId, 'utf8')
+    const path = RNFS.DocumentDirectoryPath + '/wstm-progress.json';
+
+    const newState = {
+      currentActivityId: api.getState().progress.currentActivityId,
+      highestActivityId: api.getState().progress.highestActivityId
+    }
+
+    RNFS.writeFile(path, JSON.stringify(newState), 'utf8')
       .then((success) => {
-        console.log('FILE WRITTEN!');
+        console.log('file written hooray!');
       })
       .catch((err) => {
         console.log(err.message);
       });
   },
 });
+

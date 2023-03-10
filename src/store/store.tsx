@@ -2,7 +2,6 @@ import {
   AnyAction,
   combineReducers,
   createAsyncThunk,
-  createListenerMiddleware,
   createSlice,
   PayloadAction,
   ThunkDispatch,
