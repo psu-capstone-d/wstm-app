@@ -24,31 +24,33 @@ const [moduleIdGenerator, lastModuleId] = idGenerator()
 const [activityIdGenerator] = idGenerator()
 
 const titleGenerator = (moduleNum: number) => {
-    const questionNum = Array(moduleNum).fill(0)
-    return [(i: number) => {
-        questionNum[i] += 1;
-        return `Question ${questionNum[i]}`;
-    }];
-};
-const [questionTitleGenerator] = titleGenerator(modules.length);
+  const questionNum = Array(moduleNum).fill(0)
+  return [
+    (i: number) => {
+      questionNum[i] += 1
+      return `Question ${questionNum[i]}`
+    },
+  ]
+}
+const [questionTitleGenerator] = titleGenerator(modules.length)
 
 export const demoCourse: Course = {
-    name: 'Demo Course',
-    modules: modules.map<Module>(({title,activities}, i) => ({
-        id: moduleIdGenerator(),
-        title: title,
-        activities: (activities as Activity[]).map(activity => {
-            const a: Activity = {
-                ...activity,
-                id: activityIdGenerator(),
-                moduleId: lastModuleId(),
-            }
-            if (activity.type == 'question') {
-                a.title = questionTitleGenerator(i)
-            }
-            return a
-        }),
-    })) as Module[],
+  name: 'Demo Course',
+  modules: modules.map<Module>(({title, activities}, i) => ({
+    id: moduleIdGenerator(),
+    title: title,
+    activities: (activities as Activity[]).map(activity => {
+      const a: Activity = {
+        ...activity,
+        id: activityIdGenerator(),
+        moduleId: lastModuleId(),
+      }
+      if (activity.type == 'question') {
+        a.title = questionTitleGenerator(i)
+      }
+      return a
+    }),
+  })) as Module[],
 }
 export const demoActivities = demoCourse.modules.reduce(
   (p, c) => [...p, ...c.activities],
