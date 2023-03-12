@@ -5,10 +5,12 @@ export const module2: ModuleFixtures = {
   activities: [
     {
       type: 'text',
+      title: 'What is Phishing',
       text: "Phishing is a a form of social engineering that heavily relies on human interaction to get users to divulge sensitive information. In laymans terms, it's and attack designed to trick a person into divulging sensitive information.",
     },
     {
       type: 'text',
+      title: 'A Phishing example',
       text: 'Phishing example: You receive an email from someone claiming to be your bank. It looks legit with a header with your banks logo and professional language. It tells you that your bank account has been compromised and you must act quickly by following the link provided to reset your password. This attack is designed to get you divulge your login information.',
     },
     {
@@ -30,6 +32,7 @@ export const module2: ModuleFixtures = {
     },
     {
       type: 'text',
+      title: 'Types of phishing',
       text:
         'Phishing is most commonly associated with email, but it can come in many different forms. Here are some of the different subtypes of phishing attacks.\n' +
         'Spear Phishing - Directly targeting a specific user or subset of users. Examples could be a system administrator or anyone with some type of elevated privileges within a company. Can also be targeted at individual users at home, but is far less common.\n' +
