@@ -1,4 +1,4 @@
-import {ModuleFixtures} from 'src/fixtures/fixtures'
+import {ModuleFixtures} from 'src/types'
 
 export const module3: ModuleFixtures = {
   title: 'Password security',

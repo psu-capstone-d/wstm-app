@@ -1,13 +1,9 @@
-import {Activity, Course, Module} from 'src/types'
+import {Activity, Course, Module, ModuleFixtures} from 'src/types'
 import {module1} from 'src/fixtures/module1'
 import {module2} from 'src/fixtures/module2'
 import {module3} from 'src/fixtures/module3'
 import {module4} from 'src/fixtures/module4'
 
-export type ModuleFixtures = {
-  title: string
-  activities: Partial<Activity>[]
-}
 const modules: ModuleFixtures[] = [module1, module2, module3, module4]
 
 const idGenerator = () => {

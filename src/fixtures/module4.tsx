@@ -1,4 +1,4 @@
-import {ModuleFixtures} from 'src/fixtures/fixtures'
+import {ModuleFixtures} from 'src/types'
 
 export const module4: ModuleFixtures = {
   title: 'Social Media',
