@@ -1,5 +1,5 @@
 import React, {forwardRef, Fragment, PropsWithChildren, useMemo} from 'react'
-import {StyleSheet, View} from 'react-native'
+import { ScrollView, StyleSheet, View } from "react-native";
 
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout'
 import {
@@ -79,7 +79,7 @@ const Drawer: React.ForwardRefRenderFunction<
 
   const renderDrawer = () => {
     return (
-      <View style={styles.drawerContainer}>
+      <ScrollView style={styles.drawerContainer}>
         <View style={styles.courseTitle}>
           <Text variant="h4" style={styles.drawerText}>
             {course.name}
@@ -121,7 +121,7 @@ const Drawer: React.ForwardRefRenderFunction<
           </Fragment>
         ))}
         <Spacer />
-      </View>
+      </ScrollView>
     )
   }
 
