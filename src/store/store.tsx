@@ -11,6 +11,7 @@ import {ColorTheme, Screen} from 'src/types'
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux'
 import {DrawerState} from 'react-native-gesture-handler/DrawerLayout'
 import {demoCourse} from 'src/fixtures'
+import RNFS from "react-native-fs";
 
 /******* UI State *******/
 // Not persisted.
@@ -60,13 +61,62 @@ export const uiSlice = createSlice({
 /******* Progress State *******/
 // Persisted.
 // Contains state information for the progress through the course.
-const initialActivityId = demoCourse.modules[0].activities[0].id
+
+type ProgressState = {
+  currentActivityId: number,
+  highestActivityId: number
+}
+
+const initialActivityId = demoCourse.modules[0].activities[0].id;
+const defaultInitialState: ProgressState = {
+  currentActivityId: initialActivityId,
+  highestActivityId: initialActivityId,
+};
+
+// TODO: I have this same line in listeners.tsx, should prob be global constant and live elsewhere
+const path = RNFS.DocumentDirectoryPath + "/wstm-progress.json";
+
+const getFileStateAsString = async (): Promise<string> => {
+  return RNFS.readDir(RNFS.DocumentDirectoryPath)
+    .then((result) => {
+      console.log("GOT RESULT", result);
+
+      return Promise.all([RNFS.stat(path), path]);
+
+    })
+    .then((statResult) => {
+      if (statResult[0].isFile()) {
+        // if we have a file, read it
+        return RNFS.readFile(statResult[1], "utf8");
+      }
+
+      return "no file";
+    })
+    .then((contents) => {
+      // log the file contents
+      return contents;
+    })
+    .catch((err) => {
+      throw new Error(err.message());
+    });
+};
+
+let initialProgressState: ProgressState;
+
+const getInitialProgressState = async () => {
+  try {
+    const fromFile = await getFileStateAsString();
+    initialProgressState = fromFile ? (JSON.parse(fromFile) as ProgressState) : defaultInitialState;
+  } catch (err) {
+    initialProgressState = defaultInitialState;
+  }
+};
+
+getInitialProgressState() // Where do I put this? Getting close, but I'm missing something.
+
 export const progressSlice = createSlice({
-  name: 'progress',
-  initialState: {
-    currentActivityId: initialActivityId,
-    highestActivityId: initialActivityId,
-  },
+  name: "progress",
+  initialState: initialProgressState,
   reducers: {
     setCurrentActivityId: (
       state,
@@ -80,7 +130,7 @@ export const progressSlice = createSlice({
           : state.highestActivityId,
     }),
   },
-})
+});
 
 /******* Settings State *******/
 // Persisted.
