@@ -25,6 +25,7 @@ const QuestionContent: React.FC<{
   activity: QuestionActivity
   onComplete: () => void
 }> = ({activity, onComplete}) => {
+  const [answers, setAnswers] = useState<Array<boolean[]>>([]);
   const [checked, setChecked] = useState<boolean[]>([])
   const [didSubmit, setDidSubmit] = useState(false)
   const primaryColor = usePaletteColor('primary')

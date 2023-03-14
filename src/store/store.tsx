@@ -60,13 +60,22 @@ export const uiSlice = createSlice({
 /******* Progress State *******/
 // Persisted.
 // Contains state information for the progress through the course.
-const initialActivityId = demoCourse.modules[0].activities[0].id
+// Persisted.
+// Contains state information for the progress through the course.
+interface ActivityProgress {
+  currentActivityId: number;
+  highestActivityId: number;
+  answers: {[key: number]: object}; // Object to save the state for each activity
+}
+
+const initialActivityId = demoCourse.modules[0].activities[0].id;
 export const progressSlice = createSlice({
   name: 'progress',
   initialState: {
     currentActivityId: initialActivityId,
     highestActivityId: initialActivityId,
-  },
+    answers: {}, // Initialize answers object
+  } as ActivityProgress,
   reducers: {
     setCurrentActivityId: (
       state,
@@ -79,8 +88,17 @@ export const progressSlice = createSlice({
           ? currentActivityId
           : state.highestActivityId,
     }),
+          saveAnswer: (state, {payload: {activityId, answer}}: PayloadAction<{activityId: number, answer: string}>) => ({
+            ...state,
+            answers: {
+              ...state.answers,
+              [activityId]: answer
+
+            },
+          }),
   },
-})
+
+});
 
 /******* Settings State *******/
 // Persisted.

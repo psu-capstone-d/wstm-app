@@ -98,6 +98,19 @@ export const CourseScreen = () => {
   const openDrawer = () => drawerRef.current && drawerRef.current.openDrawer()
   const closeDrawer = () => drawerRef.current && drawerRef.current.closeDrawer()
 
+  const [answer, setAnswer] = useState('');
+  const currentActivity = useCurrentActivity();
+
+  const handleAnswer = () => {
+    dispatch(actions.saveAnswer({activityId: currentActivity.id, answer}));
+  }
+
+
+  const progress = useAppSelector(state => state.progress);
+  const prevActivityId = currentActivity.prevActivityId;
+
+  const prevAnswer = progress.answers[prevActivityId];
+
   const topArea = (
     <AppBar
       key="top"
@@ -119,7 +132,7 @@ export const CourseScreen = () => {
           style={!prev && styles.hideBackButton}
           pointerEvents={drawerIsOpenOrOpening ? 'none' : 'auto'}
           onPress={() =>
-            prev && dispatch(actions.setCurrentActivityId(prev.id))
+            prev && dispatch(activity.answers[prev.id])
           }
           icon={props => <Icon name="keyboard-backspace" {...props} />}
           {...props}
@@ -155,7 +168,9 @@ export const CourseScreen = () => {
               trailing={props => (
                 <Icon name="chevron-right" {...props} size={30} />
               )}
-              onPress={() => dispatch(actions.setCurrentActivityId(next.id))}
+              onPress={() =>
+              dispatch(actions.saveAnswer(activity.id)) && dispatch(actions.setCurrentActivityId(next.id))
+              }
             />
           </View>
         )}
