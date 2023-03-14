@@ -125,6 +125,16 @@ export const module4: ModuleFixtures = {
       ],
     },
     {
+      type: 'text',
+      title: 'Dating App Safety',
+      text: "Make sure to take care when using dating apps, as the information shared" +
+        "on them is often very personal and private. Sometimes, information that you share" +
+        "on a dating app or other social media shares more information than you think it does." +
+        "For example, if you use the same photo on your dating app that you use on Facebook," +
+        "a user on the dating app can trace you back to your Facebook profile, and learn much" +
+        "more private information about you."
+    },
+    {
       type: 'question',
       text: 'To increase privacy, a photo posted to a dating app or website should be',
       choice: 'single',
@@ -169,6 +179,16 @@ export const module4: ModuleFixtures = {
           isCorrect: false,
         },
       ],
+    },
+    {
+      type: 'text',
+      title: 'Using Cloud Storage Safely',
+      text: "Cloud Storage is an app or website like Google Drive, Dropbox, or iCloud" +
+        "that allows you to store files online, instead of on your local computer." +
+        "Remember that anyone who has access to your username and password to one of " +
+        "these accounts can access your private files on them. Many of these services" +
+        "also have Family Sharing options. Make sure that you're only using this feature" +
+        "to share to the people you intend to."
     },
     {
       type: 'question',
@@ -217,6 +237,13 @@ export const module4: ModuleFixtures = {
       ],
     },
     {
+      type: 'text',
+      title: 'Apple AirTag Stalking',
+      text: "Unfortunately, Apple AirTags have been becoming a popular way for abusers to " +
+        "stalk and track people without their consent. These devices can be easily slipped" +
+        "into a purse, backpack, or car, and will give away your location to the owner."
+    },
+    {
       type: 'question',
       text: 'How can Apple AirTags be used by abusers to easily stalk people?',
       choice: 'single',
@@ -238,6 +265,14 @@ export const module4: ModuleFixtures = {
           isCorrect: false,
         },
       ],
+    },
+    {
+      type: 'text',
+      title: 'Unknown Websites',
+      text: "In general, be careful whenever you encounter a new app or website. If you" +
+        "receive an email with a link to a website you haven't heard of, consider Googling" +
+        "it or asking a trusted friend to double check that it is safe. Most importantly," +
+        "don't input any personal information on a website until you are sure that it's safe."
     },
     {
       type: 'question',
