@@ -132,7 +132,7 @@ export const CourseScreen = () => {
           style={!prev && styles.hideBackButton}
           pointerEvents={drawerIsOpenOrOpening ? 'none' : 'auto'}
           onPress={() =>
-            prev && dispatch(activity.answers[prev.id])
+            prev && dispatch(actions.setCurrentActivityId(prev.id))
           }
           icon={props => <Icon name="keyboard-backspace" {...props} />}
           {...props}
@@ -152,6 +152,7 @@ export const CourseScreen = () => {
             {activity.type == 'question' && (
               <QuestionContent
                 activity={activity}
+                set
                 onComplete={() => setReadyToAdvance(true)}
               />
             )}
@@ -169,7 +170,7 @@ export const CourseScreen = () => {
                 <Icon name="chevron-right" {...props} size={30} />
               )}
               onPress={() =>
-              dispatch(actions.saveAnswer(activity.id)) && dispatch(actions.setCurrentActivityId(next.id))
+              dispatch(actions.saveAnswers(next.id, currentActivity.id, currentActivity.answer))
               }
             />
           </View>

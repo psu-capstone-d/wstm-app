@@ -65,7 +65,7 @@ export const uiSlice = createSlice({
 interface ActivityProgress {
   currentActivityId: number;
   highestActivityId: number;
-  answers: {[key: number]: object}; // Object to save the state for each activity
+  answers: {[key: number]: string}; // Object to save the state for each activity
 }
 
 const initialActivityId = demoCourse.modules[0].activities[0].id;
@@ -87,15 +87,30 @@ export const progressSlice = createSlice({
         currentActivityId > state.highestActivityId
           ? currentActivityId
           : state.highestActivityId,
-    }),
-          saveAnswer: (state, {payload: {activityId, answer}}: PayloadAction<{activityId: number, answer: string}>) => ({
-            ...state,
-            answers: {
-              ...state.answers,
-              [activityId]: answer
 
-            },
-          }),
+
+
+
+    }),
+          saveAnswers: (
+          state,
+             {payload: currentActivityId, activityId, idx}: PayloadAction<{currentActivityId: number}>,
+           ) => ({
+             ...state,
+             currentActivityId,
+             highestActivityId:
+               currentActivityId > state.highestActivityId
+                 ? currentActivityId
+                 : state.highestActivityId,
+
+             answers:{
+                ...state.idx,
+                [activityId]: idx,
+             },
+
+           }),
+
+
   },
 
 });

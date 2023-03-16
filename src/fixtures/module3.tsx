@@ -4,6 +4,16 @@ export const module3: ModuleFixtures = {
   title: 'Password security',
   activities: [
     {
+      type: 'text',
+      title: 'Online Banking Safety Overview',
+      text: 'Online banking makes banking way more convenient but also comes with a higher risk of fraud and is a big attack point for hackers. Because of this it is important you know how to keep yourself safe online while banking. To accomplish this we will be looking into the different ways hackers and other nefarious actors try to take advantage of online banking, some of which you\'ve already learned about in the past two modules!',
+    },
+    {
+      type: 'text',
+      title: 'Choosing Passwords',
+      text: 'Due to the vulnerable nature of online banking it is considered best practice to create and store your password with a password manager in addition to two-factor authentication. That said a combination of two-factor authentication and a strong custom password will also do, the choice is just a preference. If you do choose a custom password you should make it alphanumerical and free of any personal information that would be easily guessed. ',
+    },
+    {
       type: 'question',
       text: 'When choosing a password for your online banking account which of the following should you not do?',
       choice: 'single',
@@ -25,7 +35,7 @@ export const module3: ModuleFixtures = {
           isCorrect: true,
         },
         {
-          text: 'Create a oassword using the password generation function on your password manager.',
+          text: 'Create a password using the password generation function on your password manager.',
           isCorrect: false,
         },
       ],
@@ -52,6 +62,16 @@ export const module3: ModuleFixtures = {
           isCorrect: false,
         },
       ],
+    },
+    {
+      type: 'text',
+      title: 'Gone Phishing',
+      text: 'Making sure you are on the correct website or app is a huge part of staying safe while online banking. To do this if you are browsing on your computer make sure the lock icon appears next to the URL. Also, always check the url is spelled correctly and the website itself is spelled correctly and has good grammar. When downloading your bank\'s app you should also make sure that the app has plenty of reviews and was installed from a reputable store like the App Store or Play Store. Lastly, never login to your bank from a random link, this includes links sent from people claiming to be associated with your bank and texts from someone appearing to be your bank. '
+    },
+    {
+      type: 'text',
+      title: 'Importance of Location',
+      text: 'Make sure when you check your bank you are doing it at home on a private secured WiFi network or on your cellular data and never check it on public WiFi hotspots. Also, make sure you are in a physically isolated place where people cannot watch you enter your login information.'
     },
     {
       type: 'question',
@@ -173,8 +193,13 @@ export const module3: ModuleFixtures = {
       ],
     },
     {
+      type: 'text',
+      title: 'Third-Party Banking',
+      text: 'Third-Party banking apps like Venmo, Cashapp, Earnin, etc. are awesome tools to send money to and from other people. When using these apps make sure they were downloaded from a reputable source and make sure they connect to your bank account via a secure connect platform like Plaid. If you are unsure if something like Plaid is used contact your bank before connecting it. ',
+    },
+    {
       type: 'question',
-      text: 'When using 3rd party banking apps such as Venmo, Cashapp, Earning, etc. what are good practices for providing banking information and using these apps?',
+      text: 'When using 3rd party banking apps such as Venmo, Cashapp, Earnin, etc. what are good practices for providing banking information and using these apps?',
       choice: 'multi',
       answers: [
         {
@@ -198,6 +223,11 @@ export const module3: ModuleFixtures = {
           isCorrect: false,
         },
       ],
+    },
+    {
+      type: 'text',
+      title: 'Government Websites, Education Websites, and Social Security',
+      text: 'Your money isn\'t just kept on your bank but often websites that need access to it like government, education, and related sites. It is important to make sure you access these sites from a secure private network, insuring there is a lock icon in the url, and that urls end with either \.gov or \.edu. Additionally there will be times you need to enter your social security and the same precautions should be made and only on trusted reputable websites.',
     },
     {
       type: 'question',
@@ -229,11 +259,11 @@ export const module3: ModuleFixtures = {
       answers: [
         {
           text: 'Look for the .gov or .edu at the end of your URL.',
-          isCorrect: false,
+          isCorrect: true,
         },
         {
           text: 'Make sure the connection is secure by seeing a lock icon next to the URL.',
-          isCorrect: false,
+          isCorrect: true,
         },
         {
           text: 'It was the first result on Google search',
@@ -241,7 +271,7 @@ export const module3: ModuleFixtures = {
         },
         {
           text: 'There are no spelling errors in the URL',
-          isCorrect: false,
+          isCorrect: true,
         },
       ],
     },

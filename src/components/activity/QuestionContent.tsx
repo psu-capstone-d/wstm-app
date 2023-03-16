@@ -4,6 +4,10 @@ import Section from 'src/components/layout/Section'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import {StyleSheet, Text, View} from 'react-native'
 import {Button, usePaletteColor} from '@react-native-material/core'
+import {actions, useAppDispatch, useAppSelector} from 'src/store'
+import {useCourse, useCurrentActivity, useIsDarkMode} from 'src/hooks'
+
+
 
 const styles = StyleSheet.create({
   answerContainer: {
@@ -31,8 +35,10 @@ const QuestionContent: React.FC<{
   const primaryColor = usePaletteColor('primary')
   const readyToSubmit = useMemo(() => Boolean(checked.find(v => v)), [checked])
   const isMulti = activity.choice == 'multi'
+
   useEffect(() => {
     setChecked(activity.answers.map(() => false))
+
     setDidSubmit(false)
   }, [activity])
   const onPress = (answer: Answer, idx: number) => () => {
@@ -47,6 +53,7 @@ const QuestionContent: React.FC<{
     // otherwise for single, the user can only select a radio (no unselect)
     checkedUpdate[idx] = isMulti ? !checked[idx] : true
     setChecked(checkedUpdate)
+
   }
   const onSubmit = () => {
     setDidSubmit(true)
@@ -81,6 +88,7 @@ const QuestionContent: React.FC<{
             }}
             text={answer.text}
           />
+
           {didSubmit && answer.explanation && (
             <Text style={styles.explanationText}>{answer.explanation}</Text>
           )}
