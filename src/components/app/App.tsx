@@ -15,8 +15,8 @@ import {Colors} from 'react-native/Libraries/NewAppScreen'
 import {useIsDarkMode} from 'src/hooks'
 import BottomNav from './BottomNav'
 import {Provider} from 'react-redux'
-import {configureStore} from '@reduxjs/toolkit'
-import {reducer, useAppSelector} from 'src/store'
+import { configureStore, Store } from "@reduxjs/toolkit";
+import { actions, loadProgressFromFile, reducer, useAppSelector } from "src/store";
 import {CourseScreen} from 'src/components/screens/CourseScreen'
 import SettingsScreen from 'src/components/screens/SettingsScreen'
 import { listenerMiddleware } from "src/listeners/listeners";
@@ -41,10 +41,25 @@ const makeStyles = (isDarkMode: boolean) =>
     },
   })
 
+/*
+* - make action with create action
+*   - payload is entire state from file for progress slice -- PayloadAction<ProgressState> <- ??
+*   - in store.tsx
+*     - use "extra reducers" to add action
+* - make async load function (already made I guess)
+*   - takes the store as a parameter
+*     - .dispatch, .getState on store
+*   - action calls this ^?
+* - make a boolean in ui slice that gets updated by action to show state of loading(?)
+* */
+
 const store = configureStore({
   reducer,
   middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(listenerMiddleware.middleware),
 })
+
+// TODO: Getting one of these warnings on this call: "Promise returned from loadProgressFromFile is ignored"
+loadProgressFromFile(store)
 
 const App = () => {
   return (

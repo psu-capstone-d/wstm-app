@@ -1,16 +1,17 @@
 import {
+  ActionReducerMapBuilder,
   AnyAction,
-  combineReducers,
+  combineReducers, createAction,
   createAsyncThunk,
   createSlice,
-  PayloadAction,
+  PayloadAction, Store,
   ThunkDispatch,
   TypedStartListening,
-} from '@reduxjs/toolkit'
-import {ColorTheme, Screen} from 'src/types'
-import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux'
-import {DrawerState} from 'react-native-gesture-handler/DrawerLayout'
-import {demoCourse} from 'src/fixtures'
+} from "@reduxjs/toolkit";
+import { ColorTheme, Screen } from "src/types";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { DrawerState } from "react-native-gesture-handler/DrawerLayout";
+import { demoCourse } from "src/fixtures";
 import RNFS from "react-native-fs";
 
 /******* UI State *******/
@@ -27,6 +28,7 @@ const drawerStatus = {
 }
 const initialUiState = {
   currentScreen: 'course' as Screen,
+  progressStateIsLoaded: false,
   ...drawerStatus,
 }
 type DrawerStateUpdate = Pick<
@@ -55,6 +57,11 @@ export const uiSlice = createSlice({
       ...state,
       drawerIsOpen,
     }),
+  }, extraReducers: (builder) => {
+    builder.addCase(loadProgressAction, (state) => ({
+      ...state,
+      progressStateIsLoaded: true,
+    }));
   },
 })
 
@@ -73,7 +80,7 @@ const defaultInitialState: ProgressState = {
   highestActivityId: initialActivityId,
 };
 
-// TODO: I have this same line in listeners.tsx, should prob be global constant and live elsewhere
+// TODO: I have this same line in listeners.tsx. Where should global constants live?
 const path = RNFS.DocumentDirectoryPath + "/wstm-progress.json";
 
 const getFileStateAsString = async (): Promise<string> => {
@@ -100,23 +107,27 @@ const getFileStateAsString = async (): Promise<string> => {
       throw new Error(err.message());
     });
 };
+// TODO: bad naming here help
+const loadProgressAction = createAction<ProgressState>("loadProgressAction");
 
-let initialProgressState: ProgressState;
+export const loadProgressFromFile = async (store: Store) => {
+  console.log("Loading progress from file");
 
-const getInitialProgressState = async () => {
+  let progressState: ProgressState;
   try {
     const fromFile = await getFileStateAsString();
-    initialProgressState = fromFile ? (JSON.parse(fromFile) as ProgressState) : defaultInitialState;
+    progressState = fromFile ? (JSON.parse(fromFile) as ProgressState) : defaultInitialState;
+    console.log("Loaded progress from file!", progressState);
   } catch (err) {
-    initialProgressState = defaultInitialState;
+    console.log("Error loading progress from file", err);
+    progressState = defaultInitialState;
   }
+  store.dispatch(loadProgressAction(progressState));
 };
-
-getInitialProgressState() // Where do I put this? Getting close, but I'm missing something.
 
 export const progressSlice = createSlice({
   name: "progress",
-  initialState: initialProgressState,
+  initialState: defaultInitialState,
   reducers: {
     setCurrentActivityId: (
       state,
@@ -129,6 +140,14 @@ export const progressSlice = createSlice({
           ? currentActivityId
           : state.highestActivityId,
     }),
+  }, extraReducers: (builder) => {
+    builder
+      .addCase(loadProgressAction, (
+        state: ProgressState,
+        { payload: progressStateFromFile }: PayloadAction<ProgressState>
+      ) => ({
+        ...progressStateFromFile,
+      }));
   },
 });
 
@@ -168,8 +187,8 @@ export type RootState = ReturnType<typeof reducer>
 export type API = {getState: () => RootState; dispatch: AppDispatch}
 export type AppDispatch = ThunkDispatch<RootState, any, AnyAction>
 export type AppStartListening = TypedStartListening<RootState, AppDispatch>
-export const useAppDispatch: () => AppDispatch = useDispatch
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const thunk = createAsyncThunk.withTypes<{
   state: RootState
