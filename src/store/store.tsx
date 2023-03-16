@@ -80,7 +80,6 @@ const defaultInitialState: ProgressState = {
   highestActivityId: initialActivityId,
 };
 
-// TODO: I have this same line in listeners.tsx. Where should global constants live?
 const path = RNFS.DocumentDirectoryPath + "/wstm-progress.json";
 
 const getFileStateAsString = async (): Promise<string> => {
@@ -107,7 +106,6 @@ const getFileStateAsString = async (): Promise<string> => {
       throw new Error(err.message());
     });
 };
-// TODO: bad naming here help
 const loadProgressAction = createAction<ProgressState>("loadProgressAction");
 
 export const loadProgressFromFile = async (store: Store) => {
