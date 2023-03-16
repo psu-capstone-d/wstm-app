@@ -63,12 +63,12 @@ export const uiSlice = createSlice({
 // Persisted.
 // Contains state information for the progress through the course.
 interface ActivityProgress {
-  currentActivityId: number;
-  highestActivityId: number;
-  answers: {[key: number]: string}; // Object to save the state for each activity
+  currentActivityId: number
+  highestActivityId: number
+  answers: {[key: number]: string} // Object to save the state for each activity
 }
 
-const initialActivityId = demoCourse.modules[0].activities[0].id;
+const initialActivityId = demoCourse.modules[0].activities[0].id
 export const progressSlice = createSlice({
   name: 'progress',
   initialState: {
@@ -87,33 +87,29 @@ export const progressSlice = createSlice({
         currentActivityId > state.highestActivityId
           ? currentActivityId
           : state.highestActivityId,
-
-
-
-
     }),
-          saveAnswers: (
-          state,
-             {payload: currentActivityId, activityId, idx}: PayloadAction<{currentActivityId: number}>,
-           ) => ({
-             ...state,
-             currentActivityId,
-             highestActivityId:
-               currentActivityId > state.highestActivityId
-                 ? currentActivityId
-                 : state.highestActivityId,
+    saveAnswers: (
+      state,
+      {
+        payload: currentActivityId,
+        activityId,
+        idx,
+      }: PayloadAction<{currentActivityId: number}>,
+    ) => ({
+      ...state,
+      currentActivityId,
+      highestActivityId:
+        currentActivityId > state.highestActivityId
+          ? currentActivityId
+          : state.highestActivityId,
 
-             answers:{
-                ...state.idx,
-                [activityId]: idx,
-             },
-
-           }),
-
-
+      answers: {
+        ...state.idx,
+        [activityId]: idx,
+      },
+    }),
   },
-
-});
+})
 
 /******* Settings State *******/
 // Persisted.

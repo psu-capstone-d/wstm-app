@@ -98,18 +98,19 @@ export const CourseScreen = () => {
   const openDrawer = () => drawerRef.current && drawerRef.current.openDrawer()
   const closeDrawer = () => drawerRef.current && drawerRef.current.closeDrawer()
 
-  const [answer, setAnswer] = useState('');
-  const currentActivity = useCurrentActivity();
+  // const [answer, setAnswer] = useState('')
+  const currentActivity = useCurrentActivity()
 
-  const handleAnswer = () => {
-    dispatch(actions.saveAnswer({activityId: currentActivity.id, answer}));
-  }
+  // const handleAnswer = () => {
+  //   dispatch(actions.saveAnswer({activityId: currentActivity.id, answer}))
+  // }
 
+  const progress = useAppSelector(state => state.progress)
+  // if (currentActivity) {
+  //   const prevActivityId = currentActivity.prevActivityId
+  // }
 
-  const progress = useAppSelector(state => state.progress);
-  const prevActivityId = currentActivity.prevActivityId;
-
-  const prevAnswer = progress.answers[prevActivityId];
+  // const prevAnswer = progress.answers[prevActivityId]
 
   const topArea = (
     <AppBar
@@ -135,9 +136,9 @@ export const CourseScreen = () => {
           disabled={!prev}
           style={!prev && styles.hideBackButton}
           pointerEvents={drawerIsOpenOrOpening ? 'none' : 'auto'}
-          onPress={() =>
-            prev && dispatch(actions.setCurrentActivityId(prev.id))
-          }
+          onPress={() => {
+            return prev && dispatch(actions.setCurrentActivityId(prev.id))
+          }}
           icon={props => <Icon name="keyboard-backspace" {...props} />}
           {...props}
         />
@@ -154,7 +155,6 @@ export const CourseScreen = () => {
             {activity.type == 'question' && (
               <QuestionContent
                 activity={activity}
-                set
                 onComplete={() => setReadyToAdvance(true)}
               />
             )}
@@ -172,7 +172,15 @@ export const CourseScreen = () => {
                 <Icon name="chevron-right" {...props} size={30} />
               )}
               onPress={() =>
-              dispatch(actions.saveAnswers(next.id, currentActivity.id, currentActivity.answer))
+                dispatch(
+                  actions.saveAnswers(
+                    next.id,
+                    currentActivity.idx,
+                    currentActivity.activity.type === 'question'
+                      ? currentActivity.activity.choice
+                      : null,
+                  ),
+                )
               }
             />
           </View>
