@@ -1,9 +1,19 @@
 import {ModuleFixtures} from 'src/types'
 
 export const module1: ModuleFixtures = {
-  title: 'Module 1',
+  title: 'Online Account Management',
   activities: [
-    {
+      {
+        type: 'text',
+        title: 'Managing Online Accounts',
+        text: 'Almost every website on the internet requires you to have some sort of account, but it is easy to fall victim to hackers or other nefarious actors if you don\'t know good security practices. So lets learn how to keep your account secure! That means NEVER share your login information with anyone.',
+      },
+      {
+        type: 'text',
+        title: 'The Basics',
+        text: 'Your accounts online are small window into your life. So, it is important to have this in mind when creating accounts as you never know who could see your account information. This means using professional usernames, secure passwords, appropriate profile photos, etc. is best practice.',
+      },
+       {
       type: 'question',
       text: 'When creating a new account which of the below options is considered best practice?',
       choice: 'single',
@@ -26,6 +36,7 @@ export const module1: ModuleFixtures = {
         },
       ],
     },
+
     {
       type: 'question',
       text: 'When is it okay to share your login information with other people?',
@@ -39,6 +50,26 @@ export const module1: ModuleFixtures = {
         },
         {text: 'With someone claiming to be tech support', isCorrect: false},
       ],
+    },
+    {
+      type: 'text',
+      title: 'Choosing Good Passwords',
+      text: 'Choosing a good password is arguably the most important part of creating a new account online. Without a good password your account is at risk of being compromised and losing personal information. Let\'s learn how to choose good passwords.',
+    },
+    {
+      type: 'text',
+      title: 'Custom Passwords',
+      text: 'If you decide to create your own password, you should always use a combination of letters, numbers and symbols in order to make passwords harder to guess. Since the goal is to make your password as secure as possible there are a couple of things you should avoid such as including your name, the name of your pets, common words or phrases, and significant dates. Never reuse passwords.',
+    },
+    {
+      type: 'text',
+      title: 'Password Managers and Alternative Login Methods',
+      text: 'You might be thinking "Okay, wow choosing a password is harder than I thought!". Don\'t worry though password managers and alternative login methods provide a safe alternative. Password managers work by storing all your passwords in an encrypted application and even help you generate passwords that are more complex and random. In addition to password managers, alternative logins such as FaceID, TouchID, pattern locks, and retina scanning are also secure.',
+    },
+    {
+      type: 'text',
+      title: 'Two-Factor Authentication',
+      text: 'Finally, two-factor authentication is another great way to keep your account secure. This allows you to have a code sent to your email, phone, or authentication app that is required to continue signing in. This stops would be hackers from being able to login to your account without your authentication code. ',
     },
     {
       type: 'question',
@@ -103,6 +134,11 @@ export const module1: ModuleFixtures = {
       ],
     },
     {
+      type: 'text',
+      title: 'Keeping Account Content Safe',
+      text: 'Keeping your account secure is one thing but keeping yourself and your information safe is more important. That is why you should never share any information that could be used to locate you in real life including pictures, addresses, and phone numbers. A good option is to set your accounts to private for better security and peace of mind. Lastly, you should only share information with reputable websites/apps that you want to share information with. ',
+    },
+    {
       type: 'question',
       text: 'What should you do with all social media accounts to stay safe online?',
       choice: 'single',
@@ -136,7 +172,7 @@ export const module1: ModuleFixtures = {
         },
         {text: 'Whenever they ask for it', isCorrect: false},
         {
-          text: 'When it is a trusted appllication with good reviews from a reputable App Store and I want to share information with them',
+          text: 'When it is a trusted application with good reviews from a reputable App Store and I want to share information with them',
           isCorrect: true,
         },
         {
