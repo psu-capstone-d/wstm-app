@@ -40,3 +40,8 @@ export type Course = {
   name: string
   modules: Module[]
 }
+
+export type ModuleFixtures = {
+  title: string
+  activities: Partial<Activity>[]
+}
