@@ -24,7 +24,7 @@ const makeStyles = (isDarkMode: boolean) =>
       flex: 1,
     },
     scrollViewContainer: {
-      flex: 1
+      flex: 1,
     },
     lowerView: {
       height: 90,
@@ -103,7 +103,11 @@ export const CourseScreen = () => {
       key="top"
       centerTitle
       title={module.title}
-      subtitle={activity.type == 'text' ? activity.title : ''}
+      subtitle={
+        activity.type == 'text' || activity.type == 'question'
+          ? activity.title
+          : ''
+      }
       onTouchEnd={drawerIsOpenOrOpening ? closeDrawer : undefined}
       trailing={props => (
         <IconButton
@@ -131,9 +135,7 @@ export const CourseScreen = () => {
   const mainArea = (
     <View style={styles.container}>
       <View style={styles.scrollViewContainer}>
-        <ScrollView
-          key="main"
-          contentInsetAdjustmentBehavior="automatic">
+        <ScrollView key="main" contentInsetAdjustmentBehavior="automatic">
           <View style={styles.container}>
             {activity.type == 'text' && <TextContent activity={activity} />}
             {activity.type == 'question' && (
@@ -161,7 +163,7 @@ export const CourseScreen = () => {
         )}
       </View>
     </View>
-  );
+  )
 
   const bottomArea = (
     <>
