@@ -55,12 +55,6 @@ const makeStyles = (isDarkMode: boolean) =>
     hideBackButton: {
       opacity: 0,
     },
-    title: {
-      flexGrow: 1,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
   })
 
 export const CourseScreen = () => {
