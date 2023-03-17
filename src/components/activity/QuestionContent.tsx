@@ -39,8 +39,8 @@ const QuestionContent: React.FC<{
 
   useEffect(() => {
 
-    const checkedAnswers = useAppSelector(state => state.CheckedAnswers[activity.id])
-    if(checkedAnswers){
+    const checkedAnswer = useAppSelector(state => state.CheckedAnswers[activity.id])
+    if(checkedAnswer){
       setChecked(activity.answers.map(() => false))
       setDidSubmit(false)
     }else{

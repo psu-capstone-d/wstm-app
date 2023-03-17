@@ -102,7 +102,7 @@ export const CourseScreen = () => {
   const closeDrawer = () => drawerRef.current && drawerRef.current.closeDrawer()
 
   const onQuestionComplete = (checked: CheckedAnswers) => {
-    dispatch(actions.saveCheckedAnswers(CheckedAnswers))
+    dispatch(actions.saveCheckedAnswer(CheckedAnswers))
   }
   // const [answer, setAnswer] = useState('')
   const currentActivity = useCurrentActivity()
@@ -180,7 +180,7 @@ export const CourseScreen = () => {
               onPress={() =>
               () =>{
 
-                dispatch(actions.saveCheckedAnswers(activity.id, CheckedAnswers))
+                dispatch(actions.saveCheckedAnswer(activity.id, CheckedAnswers))
                 dispatch(actions.setCurrentActivityId(next.id))
                }
 
