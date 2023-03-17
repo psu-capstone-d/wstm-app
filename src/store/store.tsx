@@ -74,7 +74,7 @@ export const progressSlice = createSlice({
   initialState: {
     currentActivityId: initialActivityId,
     highestActivityId: initialActivityId,
-    answers: {}, // Initialize answers object
+
   } as ActivityProgress,
   reducers: {
     setCurrentActivityId: (

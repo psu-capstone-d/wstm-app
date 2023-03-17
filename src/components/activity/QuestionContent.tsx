@@ -30,25 +30,20 @@ const QuestionContent: React.FC<{
   activity: QuestionActivity
   onComplete: (checked: CheckedAnswers) => void
 }> = ({activity, onComplete}) => {
-  const [answers, setAnswers] = useState<Array<boolean[]>>([]);
   const [checked, setChecked] = useState<CheckedAnswers>([])
   const [didSubmit, setDidSubmit] = useState(false)
   const primaryColor = usePaletteColor('primary')
   const readyToSubmit = useMemo(() => Boolean(checked.find(v => v)), [checked])
   const isMulti = activity.choice == 'multi'
+  const checkedAnswer = useAppSelector(state => state.checkedAnswers[activity.id])
 
   useEffect(() => {
-
-    const checkedAnswer = useAppSelector(state => state.CheckedAnswers[activity.id])
-    if(checkedAnswer){
-      setChecked(activity.answers.map(() => false))
-      setDidSubmit(false)
-    }else{
-      setChecked(activity.answers.map(() => false))
-      setDidSubmit(false)
-    }
-
+    setChecked(
+      checkedAnswer ? checkedAnswer : activity.answers.map(() => false),
+    )
+    setDidSubmit(Boolean(checkedAnswer))
   }, [activity])
+
   const onPress = (answer: Answer, idx: number) => () => {
     if (didSubmit) {
       return
@@ -65,7 +60,7 @@ const QuestionContent: React.FC<{
   }
   const onSubmit = () => {
     setDidSubmit(true)
-    onComplete()
+    onComplete(checked)
   }
 
   const fillColor = (idx: number) => {
