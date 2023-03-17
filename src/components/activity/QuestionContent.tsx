@@ -7,8 +7,11 @@ import {Button, usePaletteColor} from '@react-native-material/core'
 
 const styles = StyleSheet.create({
   answerContainer: {
-    paddingHorizontal: 24,
-    marginTop: 16,
+    paddingRight: 24,
+    paddingVertical: 6,
+    textAlign: 'left',
+    marginHorizontal: 24,
+    marginRight: 30,
   },
   submitContainer: {
     marginTop: 24,
