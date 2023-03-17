@@ -4,6 +4,11 @@ import Section from 'src/components/layout/Section'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import {StyleSheet, Text, View} from 'react-native'
 import {Button, usePaletteColor} from '@react-native-material/core'
+import {actions, useAppDispatch, useAppSelector} from 'src/store'
+import {useCourse, useCurrentActivity, useIsDarkMode} from 'src/hooks'
+import {CheckedAnswers} from 'src/types'
+
+
 
 const styles = StyleSheet.create({
   answerContainer: {
@@ -26,17 +31,23 @@ const styles = StyleSheet.create({
 
 const QuestionContent: React.FC<{
   activity: QuestionActivity
-  onComplete: () => void
+  onComplete: (checked: CheckedAnswers) => void
 }> = ({activity, onComplete}) => {
-  const [checked, setChecked] = useState<boolean[]>([])
+  const [checked, setChecked] = useState<CheckedAnswers>([])
   const [didSubmit, setDidSubmit] = useState(false)
   const primaryColor = usePaletteColor('primary')
   const readyToSubmit = useMemo(() => Boolean(checked.find(v => v)), [checked])
   const isMulti = activity.choice == 'multi'
+  const submittedAnswer = useAppSelector(
+    state => state.submittedAnswers[activity.id],
+  )
   useEffect(() => {
-    setChecked(activity.answers.map(() => false))
-    setDidSubmit(false)
+    setChecked(
+      submittedAnswer ? submittedAnswer : activity.answers.map(() => false),
+    )
+    setDidSubmit(Boolean(submittedAnswer))
   }, [activity])
+
   const onPress = (answer: Answer, idx: number) => () => {
     if (didSubmit) {
       return
@@ -49,10 +60,11 @@ const QuestionContent: React.FC<{
     // otherwise for single, the user can only select a radio (no unselect)
     checkedUpdate[idx] = isMulti ? !checked[idx] : true
     setChecked(checkedUpdate)
+
   }
   const onSubmit = () => {
     setDidSubmit(true)
-    onComplete()
+    onComplete(checked)
   }
 
   const fillColor = (idx: number) => {
@@ -83,6 +95,7 @@ const QuestionContent: React.FC<{
             }}
             text={answer.text}
           />
+
           {didSubmit && answer.explanation && (
             <Text style={styles.explanationText}>{answer.explanation}</Text>
           )}

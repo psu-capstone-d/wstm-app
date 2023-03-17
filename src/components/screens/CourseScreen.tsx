@@ -64,10 +64,19 @@ export const CourseScreen = () => {
   const course = useCourse()
   const {activity, module, next, prev} = useCurrentActivity()
 
+
   const [readyToAdvance, setReadyToAdvance] = useState(activity.type == 'text')
+  const submittedAnswer = useAppSelector(
+    state => state.submittedAnswers[activity.id],
+  )
   useEffect(() => {
-    setReadyToAdvance(activity.type == 'text')
-  }, [activity])
+    setReadyToAdvance(
+      activity.type == 'text' ||
+        (activity.type == 'question' && Boolean(submittedAnswer)),
+    )
+  }, [activity, submittedAnswer])
+
+
 
   const secondaryColor = usePaletteColor('secondary')
   const styles = useMemo(() => makeStyles(isDarkMode), [isDarkMode])
@@ -98,6 +107,24 @@ export const CourseScreen = () => {
   const openDrawer = () => drawerRef.current && drawerRef.current.openDrawer()
   const closeDrawer = () => drawerRef.current && drawerRef.current.closeDrawer()
 
+  const onQuestionComplete = (checked: CheckedAnswers) => {
+    dispatch(actions.saveCheckedAnswers({activityId: activity.id, checked}))
+    setReadyToAdvance(true)
+  }
+  // const [answer, setAnswer] = useState('')
+  const currentActivity = useCurrentActivity()
+
+  // const handleAnswer = () => {
+  //   dispatch(actions.saveAnswer({activityId: currentActivity.id, answer}))
+  // }
+
+  const progress = useAppSelector(state => state.progress)
+  // if (currentActivity) {
+  //   const prevActivityId = currentActivity.prevActivityId
+  // }
+
+  // const prevAnswer = progress.answers[prevActivityId]
+
   const topArea = (
     <AppBar
       key="top"
@@ -122,9 +149,9 @@ export const CourseScreen = () => {
           disabled={!prev}
           style={!prev && styles.hideBackButton}
           pointerEvents={drawerIsOpenOrOpening ? 'none' : 'auto'}
-          onPress={() =>
-            prev && dispatch(actions.setCurrentActivityId(prev.id))
-          }
+          onPress={() => {
+            return prev && dispatch(actions.setCurrentActivityId(prev.id))
+          }}
           icon={props => <Icon name="keyboard-backspace" {...props} />}
           {...props}
         />
@@ -141,7 +168,7 @@ export const CourseScreen = () => {
             {activity.type == 'question' && (
               <QuestionContent
                 activity={activity}
-                onComplete={() => setReadyToAdvance(true)}
+                onComplete={onQuestionComplete}
               />
             )}
           </View>
@@ -157,7 +184,10 @@ export const CourseScreen = () => {
               trailing={props => (
                 <Icon name="chevron-right" {...props} size={30} />
               )}
-              onPress={() => dispatch(actions.setCurrentActivityId(next.id))}
+              onPress={() =>
+                dispatch(actions.setCurrentActivityId(next.id))
+
+              }
             />
           </View>
         )}
