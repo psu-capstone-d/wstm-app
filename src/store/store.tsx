@@ -1,10 +1,10 @@
 import {
-  ActionReducerMapBuilder,
   AnyAction,
   combineReducers,
   createAction,
   createAsyncThunk,
   createSlice,
+  isAnyOf,
   PayloadAction,
   Store,
   ThunkDispatch,
@@ -16,6 +16,9 @@ import {DrawerState} from 'react-native-gesture-handler/DrawerLayout'
 import {demoCourse} from 'src/fixtures'
 import RNFS from 'react-native-fs'
 import {storagePath} from 'src/constants'
+
+const resetCourse = createAction('resetCourse')
+const resume = createAction('resume')
 
 /******* UI State *******/
 // Not persisted.
@@ -30,8 +33,9 @@ const drawerStatus = {
   drawerIsOpen: false,
 }
 const initialUiState = {
-  currentScreen: 'course' as Screen,
-  progressStateIsLoaded: false,
+  currentScreen: 'intro' as Screen,
+  savedStateIsLoaded: false,
+  didLoadSavedProgress: false,
   ...drawerStatus,
 }
 type DrawerStateUpdate = Pick<
@@ -60,11 +64,21 @@ export const uiSlice = createSlice({
       ...state,
       drawerIsOpen,
     }),
+    loadingState: state => ({
+      ...state,
+      savedStateIsLoaded: false,
+      didLoadSavedProgress: false,
+    }),
   },
   extraReducers: builder => {
-    builder.addCase(loadFromFileAction, state => ({
+    builder.addCase(loadFromFile, (state, action) => ({
       ...state,
-      progressStateIsLoaded: true,
+      savedStateIsLoaded: true,
+      didLoadSavedProgress: Boolean(action.payload.progress),
+    }))
+    builder.addMatcher(isAnyOf(resume, resetCourse), state => ({
+      ...state,
+      currentScreen: 'course',
     }))
   },
 })
@@ -79,25 +93,14 @@ type ProgressState = {
 }
 
 const initialActivityId = demoCourse.modules[0].activities[0].id
-const defaultInitialState: ProgressState = {
+const defaultProgressState: ProgressState = {
   currentActivityId: initialActivityId,
   highestActivityId: initialActivityId,
 }
 
-type FileState = ProgressState & {
-  shouldUseLocalStorage: boolean
-}
-
-const defaultFileState: FileState = {
-  ...defaultInitialState,
-  shouldUseLocalStorage: false,
-}
-
 const getFileStateAsString = async (): Promise<string> => {
   return RNFS.readDir(RNFS.DocumentDirectoryPath)
-    .then(result => {
-      console.log('GOT RESULT', result)
-
+    .then(() => {
       return Promise.all([RNFS.stat(storagePath), storagePath])
     })
     .then(statResult => {
@@ -105,48 +108,31 @@ const getFileStateAsString = async (): Promise<string> => {
         // if we have a file, read it
         return RNFS.readFile(statResult[1], 'utf8')
       }
-
       return 'no file'
     })
     .then(contents => {
-      // log the file contents
       return contents
     })
     .catch(err => {
       throw new Error(err.message())
     })
 }
-const loadFromFileAction = createAction<FileState>('loadFromFileAction')
+const loadFromFile = createAction<SavedState>('loadFromFileAction')
 
-export const loadFromFile = async (store: Store) => {
-  console.log('Loading progress from file')
-
-  let fileState: FileState
+export const loadStateFromStorage = async (store: Store) => {
+  const fromFile = await getFileStateAsString()
+  let savedState: Partial<SavedState>
   try {
-    const fromFile = await getFileStateAsString()
-    const initialFileState = fromFile
-      ? (JSON.parse(fromFile) as FileState)
-      : defaultFileState
-    if (initialFileState.shouldUseLocalStorage) {
-      fileState = initialFileState
-      console.log('Loaded progress from file!', fileState)
-    } else {
-      fileState = defaultFileState
-      console.log(
-        'User requested to not load from file, setting default progress state.',
-        fileState,
-      )
-    }
-  } catch (err) {
-    console.log('Error loading progress from file', err)
-    fileState = defaultFileState
+    savedState = await JSON.parse(fromFile)
+  } catch {
+    savedState = {}
   }
-  store.dispatch(loadFromFileAction(fileState))
+  setTimeout(() => store.dispatch(loadFromFile(savedState as SavedState)), 130)
 }
 
 export const progressSlice = createSlice({
   name: 'progress',
-  initialState: defaultInitialState,
+  initialState: defaultProgressState,
   reducers: {
     setCurrentActivityId: (
       state,
@@ -161,16 +147,11 @@ export const progressSlice = createSlice({
     }),
   },
   extraReducers: builder => {
-    builder.addCase(
-      loadFromFileAction,
-      (
-        state: ProgressState,
-        {payload: progressStateFromFile}: PayloadAction<ProgressState>,
-      ) => ({
-        highestActivityId: progressStateFromFile.highestActivityId,
-        currentActivityId: progressStateFromFile.currentActivityId,
-      }),
-    )
+    builder.addCase(loadFromFile, (state, action: SavedStateAction) => ({
+      ...state,
+      ...action.payload.progress,
+    }))
+    builder.addCase(resetCourse, () => defaultProgressState)
   },
 })
 
@@ -191,6 +172,13 @@ export const submittedAnswersSlice = createSlice({
       ...state,
       [activityId]: checked,
     }),
+  },
+  extraReducers: builder => {
+    builder.addCase(loadFromFile, (state, action: SavedStateAction) => ({
+      ...state,
+      ...action.payload.submittedAnswers,
+    }))
+    builder.addCase(resetCourse, () => ({}))
   },
 })
 
@@ -220,13 +208,10 @@ export const settingsSlice = createSlice({
     }),
   },
   extraReducers: builder => {
-    builder.addCase(
-      loadFromFileAction,
-      (state, {payload: progressStateFromFile}: PayloadAction<FileState>) => ({
-        ...state,
-        shouldUseLocalStorage: progressStateFromFile.shouldUseLocalStorage,
-      }),
-    )
+    builder.addCase(loadFromFile, (state, action: SavedStateAction) => ({
+      ...state,
+      ...action.payload.settings,
+    }))
   },
 })
 
@@ -235,16 +220,20 @@ export const actions = {
   ...progressSlice.actions,
   ...settingsSlice.actions,
   ...submittedAnswersSlice.actions,
+  resetCourse,
+  resume,
 }
 
 export const reducer = combineReducers({
   [uiSlice.name]: uiSlice.reducer,
   [progressSlice.name]: progressSlice.reducer,
   [settingsSlice.name]: settingsSlice.reducer,
-  [submittedAnswersSlice.name]: settingsSlice.reducer,
+  [submittedAnswersSlice.name]: submittedAnswersSlice.reducer,
 })
 
 export type RootState = ReturnType<typeof reducer>
+type SavedState = Pick<RootState, 'settings' | 'progress' | 'submittedAnswers'>
+type SavedStateAction = PayloadAction<SavedState>
 
 export type API = {getState: () => RootState; dispatch: AppDispatch}
 export type AppDispatch = ThunkDispatch<RootState, any, AnyAction>

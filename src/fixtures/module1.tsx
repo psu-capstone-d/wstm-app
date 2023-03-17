@@ -3,17 +3,17 @@ import {ModuleFixtures} from 'src/types'
 export const module1: ModuleFixtures = {
   title: 'Online Account Management',
   activities: [
-      {
-        type: 'text',
-        title: 'Managing Online Accounts',
-        text: 'Almost every website on the internet requires you to have some sort of account, but it is easy to fall victim to hackers or other nefarious actors if you don\'t know good security practices. So lets learn how to keep your account secure! That means NEVER share your login information with anyone.',
-      },
-      {
-        type: 'text',
-        title: 'The Basics',
-        text: 'Your accounts online are small window into your life. So, it is important to have this in mind when creating accounts as you never know who could see your account information. This means using professional usernames, secure passwords, appropriate profile photos, etc. is best practice.',
-      },
-       {
+    {
+      type: 'text',
+      title: 'Managing Online Accounts',
+      text: "Almost every website on the internet requires you to have some sort of account, but it is easy to fall victim to hackers or other nefarious actors if you don't know good security practices. So lets learn how to keep your account secure! That means NEVER share your login information with anyone.",
+    },
+    {
+      type: 'text',
+      title: 'The Basics',
+      text: 'Your accounts online are small window into your life. So, it is important to have this in mind when creating accounts as you never know who could see your account information. This means using professional usernames, secure passwords, appropriate profile photos, etc. is best practice.',
+    },
+    {
       type: 'question',
       text: 'When creating a new account which of the below options is considered best practice?',
       choice: 'single',
@@ -54,7 +54,7 @@ export const module1: ModuleFixtures = {
     {
       type: 'text',
       title: 'Choosing Good Passwords',
-      text: 'Choosing a good password is arguably the most important part of creating a new account online. Without a good password your account is at risk of being compromised and losing personal information. Let\'s learn how to choose good passwords.',
+      text: "Choosing a good password is arguably the most important part of creating a new account online. Without a good password your account is at risk of being compromised and losing personal information. Let's learn how to choose good passwords.",
     },
     {
       type: 'text',
