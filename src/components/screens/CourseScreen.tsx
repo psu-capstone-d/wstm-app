@@ -16,6 +16,7 @@ import {actions, useAppDispatch, useAppSelector} from 'src/store'
 import {BaseScreen} from 'src/components/layout/BaseScreen'
 import TextContent from 'src/components/activity/TextContent'
 import QuestionContent from 'src/components/activity/QuestionContent'
+import {CheckedAnswers} from 'src/types'
 
 const makeStyles = (isDarkMode: boolean) =>
   StyleSheet.create({
@@ -64,7 +65,6 @@ export const CourseScreen = () => {
   const course = useCourse()
   const {activity, module, next, prev} = useCurrentActivity()
 
-
   const [readyToAdvance, setReadyToAdvance] = useState(activity.type == 'text')
   const submittedAnswer = useAppSelector(
     state => state.submittedAnswers[activity.id],
@@ -75,8 +75,6 @@ export const CourseScreen = () => {
         (activity.type == 'question' && Boolean(submittedAnswer)),
     )
   }, [activity, submittedAnswer])
-
-
 
   const secondaryColor = usePaletteColor('secondary')
   const styles = useMemo(() => makeStyles(isDarkMode), [isDarkMode])
@@ -111,19 +109,6 @@ export const CourseScreen = () => {
     dispatch(actions.saveCheckedAnswers({activityId: activity.id, checked}))
     setReadyToAdvance(true)
   }
-  // const [answer, setAnswer] = useState('')
-  const currentActivity = useCurrentActivity()
-
-  // const handleAnswer = () => {
-  //   dispatch(actions.saveAnswer({activityId: currentActivity.id, answer}))
-  // }
-
-  const progress = useAppSelector(state => state.progress)
-  // if (currentActivity) {
-  //   const prevActivityId = currentActivity.prevActivityId
-  // }
-
-  // const prevAnswer = progress.answers[prevActivityId]
 
   const topArea = (
     <AppBar
@@ -184,10 +169,7 @@ export const CourseScreen = () => {
               trailing={props => (
                 <Icon name="chevron-right" {...props} size={30} />
               )}
-              onPress={() =>
-                dispatch(actions.setCurrentActivityId(next.id))
-
-              }
+              onPress={() => dispatch(actions.setCurrentActivityId(next.id))}
             />
           </View>
         )}

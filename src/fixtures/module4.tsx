@@ -6,31 +6,34 @@ export const module4: ModuleFixtures = {
     {
       type: 'text',
       title: 'Social Media Introduction',
-      text: "When using social media apps, a user must be aware of some " +
-        "potential privacy risks. For our purposes here, \"social media\" " +
-        "refers to any app or website where users are able to post to a " +
-        "public or semi-public forum. Facebook and Twitter are examples of " +
-        "well known social media apps, but remember that any website where " +
-        "users post information publicly poses similar risks.",
+      text:
+        'When using social media apps, a user must be aware of some ' +
+        'potential privacy risks. For our purposes here, "social media" ' +
+        'refers to any app or website where users are able to post to a ' +
+        'public or semi-public forum. Facebook and Twitter are examples of ' +
+        'well known social media apps, but remember that any website where ' +
+        'users post information publicly poses similar risks.',
     },
     {
       type: 'text',
       title: 'Social Media Privacy',
-      text: "Users of social media apps should be mindful of how much personal " +
-        "information they share on social media. Although visibility of posts may " +
-        "be limited to a users \"friends\" or \"followers\", word travels fast " +
-        "on the internet, so its best to assume that anything posted to social media " +
-        "will be visible publicly. Also, make sure you know what personal information " +
-        "is being shared when you post. Social media apps may share information such " +
-        "as your location along with your post. You may have to look in the privacy " +
-        "section of the app's settings as well to adjust what is shared."
+      text:
+        'Users of social media apps should be mindful of how much personal ' +
+        'information they share on social media. Although visibility of posts may ' +
+        'be limited to a users "friends" or "followers", word travels fast ' +
+        'on the internet, so its best to assume that anything posted to social media ' +
+        'will be visible publicly. Also, make sure you know what personal information ' +
+        'is being shared when you post. Social media apps may share information such ' +
+        'as your location along with your post. You may have to look in the privacy ' +
+        "section of the app's settings as well to adjust what is shared.",
     },
     {
       type: 'text',
       title: 'Catfishing',
-      text: "Catfishing is a major problem on social media, and on dating apps in" +
-        "particular. \"Catfishing\" describes an online romance scam where someone " +
-        "pretends to be someone they're not to lure victims into a relationship."
+      text:
+        'Catfishing is a major problem on social media, and on dating apps in' +
+        'particular. "Catfishing" describes an online romance scam where someone ' +
+        "pretends to be someone they're not to lure victims into a relationship.",
     },
     {
       type: 'question',
@@ -127,12 +130,13 @@ export const module4: ModuleFixtures = {
     {
       type: 'text',
       title: 'Dating App Safety',
-      text: "Make sure to take care when using dating apps, as the information shared" +
-        "on them is often very personal and private. Sometimes, information that you share" +
-        "on a dating app or other social media shares more information than you think it does." +
-        "For example, if you use the same photo on your dating app that you use on Facebook," +
-        "a user on the dating app can trace you back to your Facebook profile, and learn much" +
-        "more private information about you."
+      text:
+        'Make sure to take care when using dating apps, as the information shared' +
+        'on them is often very personal and private. Sometimes, information that you share' +
+        'on a dating app or other social media shares more information than you think it does.' +
+        'For example, if you use the same photo on your dating app that you use on Facebook,' +
+        'a user on the dating app can trace you back to your Facebook profile, and learn much' +
+        'more private information about you.',
     },
     {
       type: 'question',
@@ -183,12 +187,13 @@ export const module4: ModuleFixtures = {
     {
       type: 'text',
       title: 'Using Cloud Storage Safely',
-      text: "Cloud Storage is an app or website like Google Drive, Dropbox, or iCloud" +
-        "that allows you to store files online, instead of on your local computer." +
-        "Remember that anyone who has access to your username and password to one of " +
-        "these accounts can access your private files on them. Many of these services" +
+      text:
+        'Cloud Storage is an app or website like Google Drive, Dropbox, or iCloud' +
+        'that allows you to store files online, instead of on your local computer.' +
+        'Remember that anyone who has access to your username and password to one of ' +
+        'these accounts can access your private files on them. Many of these services' +
         "also have Family Sharing options. Make sure that you're only using this feature" +
-        "to share to the people you intend to."
+        'to share to the people you intend to.',
     },
     {
       type: 'question',
@@ -239,9 +244,10 @@ export const module4: ModuleFixtures = {
     {
       type: 'text',
       title: 'Apple AirTag Stalking',
-      text: "Unfortunately, Apple AirTags have been becoming a popular way for abusers to " +
-        "stalk and track people without their consent. These devices can be easily slipped" +
-        "into a purse, backpack, or car, and will give away your location to the owner."
+      text:
+        'Unfortunately, Apple AirTags have been becoming a popular way for abusers to ' +
+        'stalk and track people without their consent. These devices can be easily slipped' +
+        'into a purse, backpack, or car, and will give away your location to the owner.',
     },
     {
       type: 'question',
@@ -269,10 +275,11 @@ export const module4: ModuleFixtures = {
     {
       type: 'text',
       title: 'Unknown Websites',
-      text: "In general, be careful whenever you encounter a new app or website. If you" +
+      text:
+        'In general, be careful whenever you encounter a new app or website. If you' +
         "receive an email with a link to a website you haven't heard of, consider Googling" +
-        "it or asking a trusted friend to double check that it is safe. Most importantly," +
-        "don't input any personal information on a website until you are sure that it's safe."
+        'it or asking a trusted friend to double check that it is safe. Most importantly,' +
+        "don't input any personal information on a website until you are sure that it's safe.",
     },
     {
       type: 'question',

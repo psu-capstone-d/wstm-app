@@ -6,7 +6,7 @@ export const module3: ModuleFixtures = {
     {
       type: 'text',
       title: 'Online Banking Safety Overview',
-      text: 'Online banking makes banking way more convenient but also comes with a higher risk of fraud and is a big attack point for hackers. Because of this it is important you know how to keep yourself safe online while banking. To accomplish this we will be looking into the different ways hackers and other nefarious actors try to take advantage of online banking, some of which you\'ve already learned about in the past two modules!',
+      text: "Online banking makes banking way more convenient but also comes with a higher risk of fraud and is a big attack point for hackers. Because of this it is important you know how to keep yourself safe online while banking. To accomplish this we will be looking into the different ways hackers and other nefarious actors try to take advantage of online banking, some of which you've already learned about in the past two modules!",
     },
     {
       type: 'text',
@@ -66,12 +66,12 @@ export const module3: ModuleFixtures = {
     {
       type: 'text',
       title: 'Gone Phishing',
-      text: 'Making sure you are on the correct website or app is a huge part of staying safe while online banking. To do this if you are browsing on your computer make sure the lock icon appears next to the URL. Also, always check the url is spelled correctly and the website itself is spelled correctly and has good grammar. When downloading your bank\'s app you should also make sure that the app has plenty of reviews and was installed from a reputable store like the App Store or Play Store. Lastly, never login to your bank from a random link, this includes links sent from people claiming to be associated with your bank and texts from someone appearing to be your bank. '
+      text: "Making sure you are on the correct website or app is a huge part of staying safe while online banking. To do this if you are browsing on your computer make sure the lock icon appears next to the URL. Also, always check the url is spelled correctly and the website itself is spelled correctly and has good grammar. When downloading your bank's app you should also make sure that the app has plenty of reviews and was installed from a reputable store like the App Store or Play Store. Lastly, never login to your bank from a random link, this includes links sent from people claiming to be associated with your bank and texts from someone appearing to be your bank. ",
     },
     {
       type: 'text',
       title: 'Importance of Location',
-      text: 'Make sure when you check your bank you are doing it at home on a private secured WiFi network or on your cellular data and never check it on public WiFi hotspots. Also, make sure you are in a physically isolated place where people cannot watch you enter your login information.'
+      text: 'Make sure when you check your bank you are doing it at home on a private secured WiFi network or on your cellular data and never check it on public WiFi hotspots. Also, make sure you are in a physically isolated place where people cannot watch you enter your login information.',
     },
     {
       type: 'question',
@@ -227,7 +227,7 @@ export const module3: ModuleFixtures = {
     {
       type: 'text',
       title: 'Government Websites, Education Websites, and Social Security',
-      text: 'Your money isn\'t just kept on your bank but often websites that need access to it like government, education, and related sites. It is important to make sure you access these sites from a secure private network, insuring there is a lock icon in the url, and that urls end with either \.gov or \.edu. Additionally there will be times you need to enter your social security and the same precautions should be made and only on trusted reputable websites.',
+      text: "Your money isn't just kept on your bank but often websites that need access to it like government, education, and related sites. It is important to make sure you access these sites from a secure private network, insuring there is a lock icon in the url, and that urls end with either .gov or .edu. Additionally there will be times you need to enter your social security and the same precautions should be made and only on trusted reputable websites.",
     },
     {
       type: 'question',

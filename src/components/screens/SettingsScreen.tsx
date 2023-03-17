@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, useMemo, useState} from 'react'
+import React, {PropsWithChildren, useMemo} from 'react'
 import {StyleSheet, Text, View} from 'react-native'
 import {BaseScreen} from 'src/components/layout/BaseScreen'
 import {ColorTheme} from 'src/types'
@@ -81,7 +81,7 @@ const SettingsScreen = () => {
           <Switch
             value={shouldUseLocalStorage}
             onValueChange={value => {
-              dispatch(actions.setShouldUseLocalStorage(value));
+              dispatch(actions.setShouldUseLocalStorage(value))
             }}
           />
         </SettingRow>

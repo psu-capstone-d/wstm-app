@@ -1,13 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React, {useMemo} from 'react'
 import {SafeAreaView, StyleSheet, View} from 'react-native'
 
@@ -15,11 +5,12 @@ import {Colors} from 'react-native/Libraries/NewAppScreen'
 import {useIsDarkMode} from 'src/hooks'
 import BottomNav from './BottomNav'
 import {Provider} from 'react-redux'
-import { configureStore, Store } from "@reduxjs/toolkit";
-import { actions, loadFromFile, reducer, useAppSelector } from "src/store";
+import {configureStore} from '@reduxjs/toolkit'
+import {loadStateFromStorage, reducer, useAppSelector} from 'src/store'
 import {CourseScreen} from 'src/components/screens/CourseScreen'
 import SettingsScreen from 'src/components/screens/SettingsScreen'
-import { listenerMiddleware } from "src/listeners/listeners";
+import {listenerMiddleware} from 'src/listeners/listeners'
+import IntroScreen from 'src/components/screens/IntroScreen'
 
 const makeStyles = (isDarkMode: boolean) =>
   StyleSheet.create({
@@ -43,10 +34,11 @@ const makeStyles = (isDarkMode: boolean) =>
 
 const store = configureStore({
   reducer,
-  middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(listenerMiddleware.middleware),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().prepend(listenerMiddleware.middleware),
 })
 
-void loadFromFile(store)
+void loadStateFromStorage(store)
 
 const App = () => {
   return (
@@ -71,6 +63,9 @@ const Root = () => {
     (drawerIsOpen && drawerIsIdle) || (drawerIsSettling && drawerWillShow)
   return (
     <SafeAreaView style={styles.container}>
+      <View style={[styles.screen, visibleScreen.intro]}>
+        <IntroScreen />
+      </View>
       <View style={[styles.screen, visibleScreen.course]}>
         <CourseScreen />
       </View>

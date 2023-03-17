@@ -48,5 +48,3 @@ export type ModuleFixtures = {
   title: string
   activities: Partial<Activity>[]
 }
-
-
