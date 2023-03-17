@@ -42,14 +42,10 @@ const makeStyles = (isDarkMode: boolean) =>
 
 const SettingsScreen = () => {
   const {colorTheme} = useAppSelector(state => state.settings)
+  const {shouldUseLocalStorage} = useAppSelector(state => state.settings)
   const isDarkMode = useIsDarkMode()
   const styles = useMemo(() => makeStyles(isDarkMode), [isDarkMode])
   const dispatch = useAppDispatch()
-
-  // temporary placeholder settings
-  const [toggle1, setToggle1] = useState(true)
-  const [toggle2, setToggle2] = useState(false)
-  const [toggle3, setToggle3] = useState(true)
 
   const SettingRow: React.FC<
     PropsWithChildren<{
@@ -81,16 +77,13 @@ const SettingsScreen = () => {
           />
         </SettingRow>
         <Divider style={styles.divider} />
-        <SettingRow label="Toggleable 1">
-          <Switch value={toggle1} onValueChange={value => setToggle1(value)} />
-        </SettingRow>
-        <Divider style={styles.divider} />
-        <SettingRow label="Toggleable 2">
-          <Switch value={toggle2} onValueChange={value => setToggle2(value)} />
-        </SettingRow>
-        <Divider style={styles.divider} />
-        <SettingRow label="Toggleable 3">
-          <Switch value={toggle3} onValueChange={value => setToggle3(value)} />
+        <SettingRow label="Save/Load from Local Storage">
+          <Switch
+            value={shouldUseLocalStorage}
+            onValueChange={value => {
+              dispatch(actions.setShouldUseLocalStorage(value));
+            }}
+          />
         </SettingRow>
       </View>
     </BaseScreen>

@@ -68,7 +68,7 @@ export const module2: ModuleFixtures = {
       choice: 'single',
       answers: [
         {text: 'True', isCorrect: false},
-        {text: 'False', isCorrect: false},
+        {text: 'False', isCorrect: true},
       ],
     },
     {

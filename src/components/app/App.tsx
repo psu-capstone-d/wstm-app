@@ -15,10 +15,11 @@ import {Colors} from 'react-native/Libraries/NewAppScreen'
 import {useIsDarkMode} from 'src/hooks'
 import BottomNav from './BottomNav'
 import {Provider} from 'react-redux'
-import {configureStore} from '@reduxjs/toolkit'
-import {reducer, useAppSelector} from 'src/store'
+import { configureStore, Store } from "@reduxjs/toolkit";
+import { actions, loadFromFile, reducer, useAppSelector } from "src/store";
 import {CourseScreen} from 'src/components/screens/CourseScreen'
 import SettingsScreen from 'src/components/screens/SettingsScreen'
+import { listenerMiddleware } from "src/listeners/listeners";
 
 const makeStyles = (isDarkMode: boolean) =>
   StyleSheet.create({
@@ -42,8 +43,10 @@ const makeStyles = (isDarkMode: boolean) =>
 
 const store = configureStore({
   reducer,
-  // middleware: getDefaultMiddleware => getDefaultMiddleware().concat(listeners),
+  middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(listenerMiddleware.middleware),
 })
+
+void loadFromFile(store)
 
 const App = () => {
   return (
