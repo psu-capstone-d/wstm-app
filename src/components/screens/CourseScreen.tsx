@@ -66,9 +66,15 @@ export const CourseScreen = () => {
 
 
   const [readyToAdvance, setReadyToAdvance] = useState(activity.type == 'text')
+  const submittedAnswer = useAppSelector(
+    state => state.submittedAnswers[activity.id],
+  )
   useEffect(() => {
-    setReadyToAdvance(activity.type == 'text')
-  }, [activity])
+    setReadyToAdvance(
+      activity.type == 'text' ||
+        (activity.type == 'question' && Boolean(submittedAnswer)),
+    )
+  }, [activity, submittedAnswer])
 
 
 
@@ -102,7 +108,8 @@ export const CourseScreen = () => {
   const closeDrawer = () => drawerRef.current && drawerRef.current.closeDrawer()
 
   const onQuestionComplete = (checked: CheckedAnswers) => {
-    dispatch(actions.saveCheckedAnswer(CheckedAnswers))
+    dispatch(actions.saveCheckedAnswers({activityId: activity.id, checked}))
+    setReadyToAdvance(true)
   }
   // const [answer, setAnswer] = useState('')
   const currentActivity = useCurrentActivity()
@@ -161,7 +168,7 @@ export const CourseScreen = () => {
             {activity.type == 'question' && (
               <QuestionContent
                 activity={activity}
-                onComplete={() => setReadyToAdvance(true)}
+                onComplete={onQuestionComplete}
               />
             )}
           </View>
@@ -178,11 +185,7 @@ export const CourseScreen = () => {
                 <Icon name="chevron-right" {...props} size={30} />
               )}
               onPress={() =>
-              () =>{
-
-                dispatch(actions.saveCheckedAnswer(activity.id, CheckedAnswers)),
                 dispatch(actions.setCurrentActivityId(next.id))
-               }
 
               }
             />
