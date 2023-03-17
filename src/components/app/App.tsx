@@ -46,7 +46,7 @@ const store = configureStore({
   middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(listenerMiddleware.middleware),
 })
 
-loadFromFile(store)
+void loadFromFile(store)
 
 const App = () => {
   return (

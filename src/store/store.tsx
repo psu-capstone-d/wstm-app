@@ -13,6 +13,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { DrawerState } from "react-native-gesture-handler/DrawerLayout";
 import { demoCourse } from "src/fixtures";
 import RNFS from "react-native-fs";
+import { storagePath } from "src/constants";
 
 /******* UI State *******/
 // Not persisted.
@@ -90,15 +91,12 @@ const defaultFileState: FileState = {
   shouldUseLocalStorage: false,
 }
 
-
-const path = RNFS.DocumentDirectoryPath + "/wstm-progress.json";
-
 const getFileStateAsString = async (): Promise<string> => {
   return RNFS.readDir(RNFS.DocumentDirectoryPath)
     .then((result) => {
       console.log("GOT RESULT", result);
 
-      return Promise.all([RNFS.stat(path), path]);
+      return Promise.all([RNFS.stat(storagePath), storagePath]);
 
     })
     .then((statResult) => {

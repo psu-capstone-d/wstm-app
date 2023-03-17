@@ -1,6 +1,7 @@
 import { createListenerMiddleware, isAnyOf, TypedStartListening } from "@reduxjs/toolkit";
 import { actions, AppStartListening} from "src/store";
 import RNFS from "react-native-fs";
+import { storagePath } from "src/constants";
 
 export const listenerMiddleware = createListenerMiddleware();
 export const startAppListening = listenerMiddleware.startListening as AppStartListening
@@ -12,7 +13,7 @@ startAppListening({
     if (api.getState().settings.shouldUseLocalStorage) {
       console.log("beginning effect execution")
 
-      const path = RNFS.DocumentDirectoryPath + "/wstm-progress.json"
+      const path = storagePath
 
       const newState = {
         shouldUseLocalStorage: api.getState().settings.shouldUseLocalStorage,
