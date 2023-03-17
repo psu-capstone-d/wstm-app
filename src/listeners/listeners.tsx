@@ -9,8 +9,6 @@ export const startAppListening = listenerMiddleware.startListening as AppStartLi
 startAppListening({
   matcher: (isAnyOf(actions.setCurrentActivityId, actions.setShouldUseLocalStorage)),
   effect: async (action, api) => {
-
-    if (api.getState().settings.shouldUseLocalStorage) {
       console.log("beginning effect execution")
 
       const path = storagePath
@@ -28,7 +26,6 @@ startAppListening({
         .catch((err) => {
           console.log(err.message)
         })
-    }
   },
 })
 
