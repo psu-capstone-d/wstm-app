@@ -180,7 +180,7 @@ export const CourseScreen = () => {
               onPress={() =>
               () =>{
 
-                dispatch(actions.saveCheckedAnswer(activity.id, CheckedAnswers))
+                dispatch(actions.saveCheckedAnswer(activity.id, CheckedAnswers)),
                 dispatch(actions.setCurrentActivityId(next.id))
                }
 

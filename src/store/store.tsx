@@ -92,29 +92,22 @@ export const progressSlice = createSlice({
 })
 
 
-interface CheckedAnswersProgress {
-  answers: {[key: number]: string} // Object to save the state for each activity
+type SubmittedAnswers = {
+  [key: number]: CheckedAnswers
 }
 
-
-export const checkedAnswersSlice = createSlice({
-  name: 'checkedAnswers',
-  initialState: {
-    checkedAnswers: {}, // Initialize answers object
-  } as CheckedAnswersProgress,
-
+export const submittedAnswersSlice = createSlice({
+  name: 'submittedAnswers',
+  initialState: {} as SubmittedAnswers,
   reducers: {
     saveCheckedAnswers: (
       state,
       {
-        payload: activityId, checked,
-      }: PayloadAction<{activityId: number, checked: CheckedAnswers}>,
+        payload: {activityId, checked},
+      }: PayloadAction<{activityId: number; checked: CheckedAnswers}>,
     ) => ({
       ...state,
-      checkedAnswers: {
-        ...state.activityId,
-        [activityId]: checked,
-      },
+      [activityId]: checked,
     }),
   },
 })
@@ -142,14 +135,14 @@ export const actions = {
   ...uiSlice.actions,
   ...progressSlice.actions,
   ...settingsSlice.actions,
-  ...checkedAnswersSlice.actions
+  ...submittedAnswersSlice.actions
 }
 
 export const reducer = combineReducers({
   [uiSlice.name]: uiSlice.reducer,
   [progressSlice.name]: progressSlice.reducer,
   [settingsSlice.name]: settingsSlice.reducer,
-  [checkedAnswersSlice.name]: checkedAnswersSlice.reducer,
+  [submittedAnswersSlice.name]: submittedAnswersSlice.reducer,
 })
 
 export type RootState = ReturnType<typeof reducer>
