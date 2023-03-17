@@ -6,6 +6,7 @@ import {StyleSheet, Text, View} from 'react-native'
 import {Button, usePaletteColor} from '@react-native-material/core'
 import {actions, useAppDispatch, useAppSelector} from 'src/store'
 import {useCourse, useCurrentActivity, useIsDarkMode} from 'src/hooks'
+import {CheckedAnswers} from 'src/types'
 
 
 
@@ -27,10 +28,10 @@ const styles = StyleSheet.create({
 
 const QuestionContent: React.FC<{
   activity: QuestionActivity
-  onComplete: (checked: Scores) => void
+  onComplete: (checked: CheckedAnswers) => void
 }> = ({activity, onComplete}) => {
   const [answers, setAnswers] = useState<Array<boolean[]>>([]);
-  const [checked, setChecked] = useState<Scores>([])
+  const [checked, setChecked] = useState<CheckedAnswers>([])
   const [didSubmit, setDidSubmit] = useState(false)
   const primaryColor = usePaletteColor('primary')
   const readyToSubmit = useMemo(() => Boolean(checked.find(v => v)), [checked])
@@ -38,8 +39,8 @@ const QuestionContent: React.FC<{
 
   useEffect(() => {
 
-    const score = useAppSelector(state => state.scores[activity.id])
-    if(score){
+    const checkedAnswers = useAppSelector(state => state.CheckedAnswers[activity.id])
+    if(checkedAnswers){
       setChecked(activity.answers.map(() => false))
       setDidSubmit(false)
     }else{

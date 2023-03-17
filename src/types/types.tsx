@@ -4,7 +4,7 @@ export type Screen = 'course' | 'settings'
 
 export type ActivityType = 'text' | 'question'
 
-export type Scores = boolean[]
+export type CheckedAnswers = boolean[]
 
 export type BaseActivity = {
   type: ActivityType

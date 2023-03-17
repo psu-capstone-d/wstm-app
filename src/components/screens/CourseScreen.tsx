@@ -101,8 +101,8 @@ export const CourseScreen = () => {
   const openDrawer = () => drawerRef.current && drawerRef.current.openDrawer()
   const closeDrawer = () => drawerRef.current && drawerRef.current.closeDrawer()
 
-  const onQuestionComplete = (checked: Scores) => {
-    dispatch(actions.saveScore(Scores))
+  const onQuestionComplete = (checked: CheckedAnswers) => {
+    dispatch(actions.saveCheckedAnswers(CheckedAnswers))
   }
   // const [answer, setAnswer] = useState('')
   const currentActivity = useCurrentActivity()
@@ -178,8 +178,11 @@ export const CourseScreen = () => {
                 <Icon name="chevron-right" {...props} size={30} />
               )}
               onPress={() =>
-                dispatch(actions.saveScore(activity.id, Scores)),
+              () =>{
+
+                dispatch(actions.saveCheckedAnswers(activity.id, CheckedAnswers))
                 dispatch(actions.setCurrentActivityId(next.id))
+               }
 
               }
             />

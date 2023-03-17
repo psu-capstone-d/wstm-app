@@ -97,21 +97,21 @@ interface ScoreProgress {
 }
 
 
-export const scoreSlice = createSlice({
-  name: 'scores',
+export const checkedAnswersSlice = createSlice({
+  name: 'CheckedAnswers',
   initialState: {
-    scores: {}, // Initialize answers object
+    CheckedAnswers: {}, // Initialize answers object
   } as ScoreProgress,
 
   reducers: {
-    saveScores: (
+    saveCheckedAnswers: (
       state,
       {
         payload: activityId, checked,
-      }: PayloadAction<{activityId: number, checked: Scores}>,
+      }: PayloadAction<{activityId: number, checked: CheckedAnswers}>,
     ) => ({
       ...state,
-      scores: {
+      CheckedAnswers: {
         ...state.activityId,
         [activityId]: checked,
       },
@@ -142,14 +142,14 @@ export const actions = {
   ...uiSlice.actions,
   ...progressSlice.actions,
   ...settingsSlice.actions,
-  ...scoreSlice.actions
+  ...checkedAnswersSlice.actions
 }
 
 export const reducer = combineReducers({
   [uiSlice.name]: uiSlice.reducer,
   [progressSlice.name]: progressSlice.reducer,
   [settingsSlice.name]: settingsSlice.reducer,
-  [scoreSlice.name]: scoreSlice.reducer,
+  [checkedAnswersSlice.name]: checkedAnswers.reducer,
 })
 
 export type RootState = ReturnType<typeof reducer>
