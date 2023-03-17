@@ -27,19 +27,26 @@ const styles = StyleSheet.create({
 
 const QuestionContent: React.FC<{
   activity: QuestionActivity
-  onComplete: () => void
+  onComplete: (checked: Scores) => void
 }> = ({activity, onComplete}) => {
   const [answers, setAnswers] = useState<Array<boolean[]>>([]);
-  const [checked, setChecked] = useState<boolean[]>([])
+  const [checked, setChecked] = useState<Scores>([])
   const [didSubmit, setDidSubmit] = useState(false)
   const primaryColor = usePaletteColor('primary')
   const readyToSubmit = useMemo(() => Boolean(checked.find(v => v)), [checked])
   const isMulti = activity.choice == 'multi'
 
   useEffect(() => {
-    setChecked(activity.answers.map(() => false))
 
-    setDidSubmit(false)
+    const score = useAppSelector(state => state.scores[activity.id])
+    if(score){
+      setChecked(activity.answers.map(() => false))
+      setDidSubmit(false)
+    }else{
+      setChecked(activity.answers.map(() => false))
+      setDidSubmit(false)
+    }
+
   }, [activity])
   const onPress = (answer: Answer, idx: number) => () => {
     if (didSubmit) {

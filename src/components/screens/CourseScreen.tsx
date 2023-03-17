@@ -64,10 +64,13 @@ export const CourseScreen = () => {
   const course = useCourse()
   const {activity, module, next, prev} = useCurrentActivity()
 
+
   const [readyToAdvance, setReadyToAdvance] = useState(activity.type == 'text')
   useEffect(() => {
     setReadyToAdvance(activity.type == 'text')
   }, [activity])
+
+
 
   const secondaryColor = usePaletteColor('secondary')
   const styles = useMemo(() => makeStyles(isDarkMode), [isDarkMode])
@@ -98,6 +101,9 @@ export const CourseScreen = () => {
   const openDrawer = () => drawerRef.current && drawerRef.current.openDrawer()
   const closeDrawer = () => drawerRef.current && drawerRef.current.closeDrawer()
 
+  const onQuestionComplete = (checked: Scores) => {
+    dispatch(actions.saveScore(Scores))
+  }
   // const [answer, setAnswer] = useState('')
   const currentActivity = useCurrentActivity()
 
@@ -172,15 +178,9 @@ export const CourseScreen = () => {
                 <Icon name="chevron-right" {...props} size={30} />
               )}
               onPress={() =>
-                dispatch(
-                  actions.saveAnswers(
-                    next.id,
-                    currentActivity.idx,
-                    currentActivity.activity.type === 'question'
-                      ? currentActivity.activity.choice
-                      : null,
-                  ),
-                )
+                dispatch(actions.saveScore(activity.id, Scores)),
+                dispatch(actions.setCurrentActivityId(next.id))
+
               }
             />
           </View>

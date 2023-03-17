@@ -3,6 +3,9 @@ export type ColorTheme = 'dark' | 'light' | 'system'
 export type Screen = 'course' | 'settings'
 
 export type ActivityType = 'text' | 'question'
+
+export type Scores = boolean[]
+
 export type BaseActivity = {
   type: ActivityType
   id: number
@@ -45,3 +48,5 @@ export type ModuleFixtures = {
   title: string
   activities: Partial<Activity>[]
 }
+
+
