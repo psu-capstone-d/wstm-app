@@ -58,7 +58,7 @@ export const uiSlice = createSlice({
       drawerIsOpen,
     }),
   }, extraReducers: (builder) => {
-    builder.addCase(loadProgressAction, (state) => ({
+    builder.addCase(loadFromFileAction, (state) => ({
       ...state,
       progressStateIsLoaded: true,
     }));
@@ -79,6 +79,17 @@ const defaultInitialState: ProgressState = {
   currentActivityId: initialActivityId,
   highestActivityId: initialActivityId,
 };
+
+
+type FileState = ProgressState & {
+  shouldUseLocalStorage: boolean,
+}
+
+const defaultFileState: FileState = {
+  ...defaultInitialState,
+  shouldUseLocalStorage: false,
+}
+
 
 const path = RNFS.DocumentDirectoryPath + "/wstm-progress.json";
 
@@ -106,21 +117,29 @@ const getFileStateAsString = async (): Promise<string> => {
       throw new Error(err.message());
     });
 };
-const loadProgressAction = createAction<ProgressState>("loadProgressAction");
+const loadFromFileAction = createAction<FileState>("loadFromFileAction");
 
-export const loadProgressFromFile = async (store: Store) => {
+export const loadFromFile = async (store: Store) => {
   console.log("Loading progress from file");
 
-  let progressState: ProgressState;
-  try {
-    const fromFile = await getFileStateAsString();
-    progressState = fromFile ? (JSON.parse(fromFile) as ProgressState) : defaultInitialState;
-    console.log("Loaded progress from file!", progressState);
-  } catch (err) {
-    console.log("Error loading progress from file", err);
-    progressState = defaultInitialState;
-  }
-  store.dispatch(loadProgressAction(progressState));
+
+    let fileState: FileState;
+    try {
+      const fromFile = await getFileStateAsString();
+      const initialFileState = fromFile ? (JSON.parse(fromFile) as FileState) : defaultFileState;
+      if (initialFileState.shouldUseLocalStorage) {
+        fileState = initialFileState
+        console.log("Loaded progress from file!", fileState);
+      } else {
+        fileState = defaultFileState;
+        console.log("User requested to not load from file, setting default progress state.", fileState)
+      }
+    } catch (err) {
+      console.log("Error loading progress from file", err);
+      fileState = defaultFileState;
+    }
+    store.dispatch(loadFromFileAction(fileState));
+
 };
 
 export const progressSlice = createSlice({
@@ -140,11 +159,12 @@ export const progressSlice = createSlice({
     }),
   }, extraReducers: (builder) => {
     builder
-      .addCase(loadProgressAction, (
+      .addCase(loadFromFileAction, (
         state: ProgressState,
         { payload: progressStateFromFile }: PayloadAction<ProgressState>
       ) => ({
-        ...progressStateFromFile,
+        highestActivityId: progressStateFromFile.highestActivityId,
+        currentActivityId: progressStateFromFile.currentActivityId
       }));
   },
 });
@@ -156,6 +176,7 @@ export const settingsSlice = createSlice({
   name: 'settings',
   initialState: {
     colorTheme: 'system' as ColorTheme,
+    shouldUseLocalStorage: true,
   },
   reducers: {
     setColorTheme: (
@@ -165,7 +186,23 @@ export const settingsSlice = createSlice({
       ...state,
       colorTheme,
     }),
-  },
+    setShouldUseLocalStorage: (
+      state,
+      {payload: shouldUseLocalStorage}: PayloadAction<boolean>,
+    ) => ({
+      ...state,
+      shouldUseLocalStorage,
+    }),
+  }, extraReducers: (builder) => {
+  builder
+    .addCase(loadFromFileAction, (
+      state,
+      { payload: progressStateFromFile }: PayloadAction<FileState>
+    ) => ({
+      ...state,
+      shouldUseLocalStorage: progressStateFromFile.shouldUseLocalStorage
+    }));
+},
 })
 
 export const actions = {

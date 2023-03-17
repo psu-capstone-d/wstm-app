@@ -16,7 +16,7 @@ import {useIsDarkMode} from 'src/hooks'
 import BottomNav from './BottomNav'
 import {Provider} from 'react-redux'
 import { configureStore, Store } from "@reduxjs/toolkit";
-import { actions, loadProgressFromFile, reducer, useAppSelector } from "src/store";
+import { actions, loadFromFile, reducer, useAppSelector } from "src/store";
 import {CourseScreen} from 'src/components/screens/CourseScreen'
 import SettingsScreen from 'src/components/screens/SettingsScreen'
 import { listenerMiddleware } from "src/listeners/listeners";
@@ -46,7 +46,7 @@ const store = configureStore({
   middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(listenerMiddleware.middleware),
 })
 
-loadProgressFromFile(store)
+loadFromFile(store)
 
 const App = () => {
   return (

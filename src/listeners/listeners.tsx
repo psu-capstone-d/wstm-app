@@ -6,25 +6,28 @@ export const listenerMiddleware = createListenerMiddleware();
 export const startAppListening = listenerMiddleware.startListening as AppStartListening
 
 startAppListening({
-  matcher: (isAnyOf(actions.setCurrentActivityId)),
+  matcher: (isAnyOf(actions.setCurrentActivityId, actions.setShouldUseLocalStorage)),
   effect: async (action, api) => {
 
-    console.log('beginning effect execution');
+    if (api.getState().settings.shouldUseLocalStorage) {
+      console.log("beginning effect execution")
 
-    const path = RNFS.DocumentDirectoryPath + '/wstm-progress.json';
+      const path = RNFS.DocumentDirectoryPath + "/wstm-progress.json"
 
-    const newState = {
-      currentActivityId: api.getState().progress.currentActivityId,
-      highestActivityId: api.getState().progress.highestActivityId
+      const newState = {
+        shouldUseLocalStorage: api.getState().settings.shouldUseLocalStorage,
+        currentActivityId: api.getState().progress.currentActivityId,
+        highestActivityId: api.getState().progress.highestActivityId,
+      };
+
+      RNFS.writeFile(path, JSON.stringify(newState), "utf8")
+        .then((success) => {
+          console.log("file written hooray!")
+        })
+        .catch((err) => {
+          console.log(err.message)
+        })
     }
-
-    RNFS.writeFile(path, JSON.stringify(newState), 'utf8')
-      .then((success) => {
-        console.log('file written hooray!');
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
   },
-});
+})
 
