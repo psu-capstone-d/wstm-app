@@ -11,6 +11,8 @@ import {CourseScreen} from 'src/components/screens/CourseScreen'
 import SettingsScreen from 'src/components/screens/SettingsScreen'
 import {listenerMiddleware} from 'src/listeners/listeners'
 import IntroScreen from 'src/components/screens/IntroScreen'
+import DeveloperScreen from 'src/components/screens/DeveloperScreen'
+import ResultsScreen from 'src/components/screens/ResultsScreen'
 
 const makeStyles = (isDarkMode: boolean) =>
   StyleSheet.create({
@@ -57,6 +59,7 @@ const Root = () => {
     drawerIsSettling,
     drawerWillShow,
     currentScreen,
+    devMode,
   } = useAppSelector(state => state.ui)
   const visibleScreen = {[currentScreen]: styles.screenVisible}
   const bottomTabsVisible =
@@ -71,6 +74,14 @@ const Root = () => {
       </View>
       <View style={[styles.screen, visibleScreen.settings]}>
         <SettingsScreen />
+      </View>
+      {devMode && (
+        <View style={[styles.screen, visibleScreen.developer]}>
+          <DeveloperScreen />
+        </View>
+      )}
+      <View style={[styles.screen, visibleScreen.results]}>
+        <ResultsScreen />
       </View>
       {bottomTabsVisible && <BottomNav />}
     </SafeAreaView>

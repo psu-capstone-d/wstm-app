@@ -37,7 +37,7 @@ const makeStyles = (primaryColor: PaletteColor, secondaryColor: PaletteColor) =>
 
 const BottomNav = () => {
   const dispatch = useAppDispatch()
-  const {currentScreen} = useAppSelector(state => state.ui)
+  const {currentScreen, devMode} = useAppSelector(state => state.ui)
   const primaryColor = usePaletteColor('primary')
   const secondaryColor = usePaletteColor('secondary')
   const styles = useMemo(
@@ -50,7 +50,7 @@ const BottomNav = () => {
   return (
     <View style={styles.container}>
       <Pressable
-        style={[styles.tab, selectedStyle.course]}
+        style={[styles.tab, selectedStyle.course, selectedStyle.results]}
         onPress={setScreen('course')}>
         <Text style={styles.tabText}>Course</Text>
       </Pressable>
@@ -59,6 +59,13 @@ const BottomNav = () => {
         onPress={setScreen('settings')}>
         <Text style={styles.tabText}>Settings</Text>
       </Pressable>
+      {devMode && (
+        <Pressable
+          style={[styles.tab, selectedStyle.developer]}
+          onPress={setScreen('developer')}>
+          <Text style={styles.tabText}>Developer</Text>
+        </Pressable>
+      )}
     </View>
   )
 }

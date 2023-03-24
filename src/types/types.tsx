@@ -1,6 +1,6 @@
 export type ColorTheme = 'dark' | 'light' | 'system'
 
-export type Screen = 'course' | 'settings'
+export type Screen = 'course' | 'settings' | 'developer' | 'results'
 
 export type ActivityType = 'text' | 'question'
 

@@ -1,7 +1,7 @@
 import {createListenerMiddleware, isAnyOf} from '@reduxjs/toolkit'
 import {actions, AppStartListening} from 'src/store'
 import RNFS from 'react-native-fs'
-import {storagePath} from 'src/constants'
+import {constants} from 'src/constants'
 
 export const listenerMiddleware = createListenerMiddleware()
 export const startAppListening =
@@ -10,7 +10,7 @@ export const startAppListening =
 startAppListening({
   matcher: isAnyOf(
     actions.resetCourse,
-    actions.saveCheckedAnswers,
+    actions.setCheckedAnswers,
     actions.setCurrentActivityId,
     actions.setShouldUseLocalStorage,
   ),
@@ -21,7 +21,7 @@ startAppListening({
         ? {settings, progress, submittedAnswers}
         : {settings},
     )
-    RNFS.writeFile(storagePath, data, 'utf8').catch(err => {
+    RNFS.writeFile(constants.storagePath, data, 'utf8').catch(err => {
       console.log(err.message)
     })
   },

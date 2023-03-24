@@ -1,5 +1,5 @@
 import {useColorScheme} from 'react-native'
-import {demoActivities, demoCourse} from 'src/fixtures'
+import {courseActivities, course} from 'src/fixtures'
 import {useAppSelector} from 'src/store'
 import {ForwardedRef, useEffect, useMemo, useRef} from 'react'
 import {Module, TextActivity} from 'src/types'
@@ -7,8 +7,8 @@ import {Module, TextActivity} from 'src/types'
 export const useIsDarkMode = () => useColorScheme() === 'dark'
 
 // temporarily use fixtures for course and activities
-export const useCourse = () => demoCourse
-export const useActivities = () => demoActivities
+export const useCourse = () => course
+export const useActivities = () => courseActivities
 
 const invalidActivity: TextActivity = {
   id: -1,

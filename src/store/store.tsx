@@ -13,9 +13,9 @@ import {
 import {CheckedAnswers, ColorTheme, Screen} from 'src/types'
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux'
 import {DrawerState} from 'react-native-gesture-handler/DrawerLayout'
-import {demoCourse} from 'src/fixtures'
+import {course} from 'src/fixtures'
 import RNFS from 'react-native-fs'
-import {storagePath} from 'src/constants'
+import {constants} from 'src/constants'
 
 const resetCourse = createAction('resetCourse')
 const resume = createAction('resume')
@@ -34,6 +34,7 @@ const drawerStatus = {
 }
 const initialUiState = {
   currentScreen: 'intro' as Screen,
+  devMode: false,
   savedStateIsLoaded: false,
   didLoadSavedProgress: false,
   ...drawerStatus,
@@ -69,6 +70,10 @@ export const uiSlice = createSlice({
       savedStateIsLoaded: false,
       didLoadSavedProgress: false,
     }),
+    toggleDevMode: state => ({
+      ...state,
+      devMode: !state.devMode,
+    }),
   },
   extraReducers: builder => {
     builder.addCase(loadFromFile, (state, action) => ({
@@ -92,40 +97,42 @@ type ProgressState = {
   highestActivityId: number
 }
 
-const initialActivityId = demoCourse.modules[0].activities[0].id
+const initialActivityId = course.modules[0].activities[0].id
 const defaultProgressState: ProgressState = {
   currentActivityId: initialActivityId,
   highestActivityId: initialActivityId,
 }
 
+const noFile = 'no file'
 const getFileStateAsString = async (): Promise<string> => {
   return RNFS.readDir(RNFS.DocumentDirectoryPath)
     .then(() => {
-      return Promise.all([RNFS.stat(storagePath), storagePath])
+      return Promise.all([
+        RNFS.stat(constants.storagePath),
+        constants.storagePath,
+      ])
     })
     .then(statResult => {
       if (statResult[0].isFile()) {
         // if we have a file, read it
         return RNFS.readFile(statResult[1], 'utf8')
       }
-      return 'no file'
+      return noFile
     })
     .then(contents => {
       return contents
     })
-    .catch(err => {
-      throw new Error(err.message())
-    })
+    .catch(() => noFile)
 }
 const loadFromFile = createAction<SavedState>('loadFromFileAction')
 
 export const loadStateFromStorage = async (store: Store) => {
   const fromFile = await getFileStateAsString()
-  let savedState: Partial<SavedState>
-  try {
-    savedState = await JSON.parse(fromFile)
-  } catch {
-    savedState = {}
+  let savedState: Partial<SavedState> = {}
+  if (fromFile != noFile) {
+    try {
+      savedState = await JSON.parse(fromFile)
+    } catch {}
   }
   setTimeout(() => store.dispatch(loadFromFile(savedState as SavedState)), 130)
 }
@@ -134,6 +141,17 @@ export const progressSlice = createSlice({
   name: 'progress',
   initialState: defaultProgressState,
   reducers: {
+    setHighestActivityId: (
+      state,
+      {payload: highestActivityId}: PayloadAction<number>,
+    ) => ({
+      ...state,
+      highestActivityId,
+      currentActivityId:
+        state.currentActivityId > highestActivityId
+          ? highestActivityId
+          : state.currentActivityId,
+    }),
     setCurrentActivityId: (
       state,
       {payload: currentActivityId}: PayloadAction<number>,
@@ -155,7 +173,7 @@ export const progressSlice = createSlice({
   },
 })
 
-type SubmittedAnswers = {
+export type SubmittedAnswers = {
   [key: number]: CheckedAnswers
 }
 
@@ -163,14 +181,10 @@ export const submittedAnswersSlice = createSlice({
   name: 'submittedAnswers',
   initialState: {} as SubmittedAnswers,
   reducers: {
-    saveCheckedAnswers: (
-      state,
-      {
-        payload: {activityId, checked},
-      }: PayloadAction<{activityId: number; checked: CheckedAnswers}>,
-    ) => ({
+    clearCheckedAnswers: () => ({}),
+    setCheckedAnswers: (state, {payload}: PayloadAction<SubmittedAnswers>) => ({
       ...state,
-      [activityId]: checked,
+      ...payload,
     }),
   },
   extraReducers: builder => {

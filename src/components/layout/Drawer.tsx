@@ -1,5 +1,5 @@
 import React, {forwardRef, Fragment, PropsWithChildren, useMemo} from 'react'
-import { ScrollView, StyleSheet, View } from "react-native";
+import {ScrollView, StyleSheet, View} from 'react-native'
 
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout'
 import {
@@ -10,13 +10,9 @@ import {
   usePaletteColor,
 } from '@react-native-material/core'
 import {actions, useAppDispatch, useAppSelector} from 'src/store'
-import {
-  useCourse,
-  useCurrentActivity,
-  useForwardRef,
-  useIsDarkMode,
-} from 'src/hooks'
+import {useCurrentActivity, useForwardRef, useIsDarkMode} from 'src/hooks'
 import {Colors} from 'react-native/Libraries/NewAppScreen'
+import {course} from 'src/fixtures'
 
 const makeStyles = (isDarkMode: boolean, primaryColor: PaletteColor) =>
   StyleSheet.create({
@@ -66,7 +62,6 @@ const Drawer: React.ForwardRefRenderFunction<
   const highestActivityId = useAppSelector(
     state => state.progress.highestActivityId,
   )
-  const course = useCourse()
   const currentActivity = useCurrentActivity()
   const styles = useMemo(
     () => makeStyles(isDarkMode, primaryColor),
