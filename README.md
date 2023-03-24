@@ -1,4 +1,4 @@
-# Online Safety and Privacy Learning App 
+# Web Security Training Modules
 
 This React app is designed to teach users about online safety, privacy, and account management skills through a series of learning modules and quiz questions. The app features four core modules that cover topics such as online account management, protecting yourself from online threats, online banking, and staying safe while using apps and websites. Each module includes quiz questions that test the user's knowledge, and their progress is tracked throughout the app.
 
