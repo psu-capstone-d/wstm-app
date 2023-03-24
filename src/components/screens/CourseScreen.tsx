@@ -8,6 +8,7 @@ import {
   AppBar,
   Button,
   IconButton,
+  Text,
   usePaletteColor,
 } from '@react-native-material/core'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -16,7 +17,8 @@ import {actions, useAppDispatch, useAppSelector} from 'src/store'
 import {BaseScreen} from 'src/components/layout/BaseScreen'
 import TextContent from 'src/components/activity/TextContent'
 import QuestionContent from 'src/components/activity/QuestionContent'
-import {CheckedAnswers} from 'src/types'
+import {CheckedAnswers, QuestionActivity} from 'src/types'
+import { demoActivities } from 'src/fixtures'
 
 const makeStyles = (isDarkMode: boolean) =>
   StyleSheet.create({
@@ -55,6 +57,10 @@ const makeStyles = (isDarkMode: boolean) =>
     },
     hideBackButton: {
       opacity: 0,
+    },
+    button: {
+      marginTop: 20,
+      marginHorizontal: 20,
     },
   })
 
@@ -110,16 +116,16 @@ export const CourseScreen = () => {
     setReadyToAdvance(true)
   }
 
+  const activitySubtitle = activity.type == 'text' || activity.type == 'question'
+  ? activity.title
+  : '';
+
   const topArea = (
     <AppBar
       key="top"
       centerTitle
-      title={module.title}
-      subtitle={
-        activity.type == 'text' || activity.type == 'question'
-          ? activity.title
-          : ''
-      }
+      title={isCourseComplete ? "Results" : module.title}
+      subtitle={ isCourseComplete ? undefined : activitySubtitle }
       onTouchEnd={drawerIsOpenOrOpening ? closeDrawer : undefined}
       trailing={props => (
         <IconButton
@@ -144,12 +150,65 @@ export const CourseScreen = () => {
     />
   )
 
+  const questions = demoActivities.filter(a => a.type === 'question') as QuestionActivity[];
+  const submittedAnswers = useAppSelector(state => state.submittedAnswers);
+  const correct = questions.reduce(
+    (p, q) => {
+      if (q.id && submittedAnswers[q.id]) {
+        const isAnswerCorrect = q.answers.reduce(
+          (p, c, i) => p && c.isCorrect === submittedAnswers[q.id][i],
+          true,
+        );
+        return p + Number(isAnswerCorrect);
+      }
+      return p;
+    },
+    0,
+  );
+
+  const score = (correct / questions.length * 100) | 0;
+  
+  
+
+  const textActivity = activity.type == 'text' && <TextContent activity={activity}/>;
+  const textCourseComplete = (
+    <>
+      <Text style={{
+        textAlign: 'center',
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginTop: 24
+      }}>🎉🎉🎉</Text>
+      <Text style={{
+        textAlign: 'center',
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginTop: 24
+      }}> {correct} out of {questions.length}</Text>
+      <Text style={{
+        textAlign: 'center',
+        fontSize: 36,
+        fontWeight: 'bold',
+        marginTop: 48
+      }}>Score: {score}%</Text>
+    </>
+  )
+
+  const startOverButton = <View style={styles.container}>
+    <Button
+      title="Start Over"
+      style={styles.button}
+      onPress={() => dispatch(actions.resetCourse())}
+    />
+</View>
+
+
   const mainArea = (
     <View style={styles.container}>
       <View style={styles.scrollViewContainer}>
         <ScrollView key="main" contentInsetAdjustmentBehavior="automatic">
           <View style={styles.container}>
-            {activity.type == 'text' && <TextContent activity={activity} />}
+            {isCourseComplete ? textCourseComplete : textActivity}
             {activity.type == 'question' && (
               <QuestionContent
                 activity={activity}
@@ -159,6 +218,7 @@ export const CourseScreen = () => {
           </View>
         </ScrollView>
       </View>
+      {isCourseComplete && startOverButton}
       <View style={styles.lowerView}>
         {readyToAdvance && next && (
           <View style={styles.advance}>
