@@ -1,4 +1,14 @@
-# WSTM
+# Online Safety and Privacy Learning App 
+
+This React app is designed to teach users about online safety, privacy, and account management skills through a series of learning modules and quiz questions. The app features four core modules that cover topics such as online account management, protecting yourself from online threats, online banking, and staying safe while using apps and websites. Each module includes quiz questions that test the user's knowledge, and their progress is tracked throughout the app.
+
+# Using the App
+
+When you first open the app, you'll see the module page with a hamburger menu showing your location in the learning modules. 
+
+Each module includes several lessons on the topic of its name, followed by short quizzes to test your knowledge. The quizzes are multiple choice and you'll be able to see your score at the end of the modules as well as get immediate feedback on each quiz question.
+
+Your progress through the modules is tracked in the app, so you can see which modules you've completed and which ones you still need to work on. If you'd like to save your progress locally, you can toggle the save progress button on the settings page
 
 ## Environment Setup
 
