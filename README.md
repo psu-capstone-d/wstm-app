@@ -51,3 +51,30 @@ In order to view the app, you will need either an emulator running or an android
    - Re-running this command at any time is fine, just make sure you have `npx react-native start` already running in another terminal.
 1. The app should now be up and running on your android device
 1. Changes made to any of the app typescript code should appear instantly upon saving.
+
+## Deployment
+
+If you'd like to deploy the release version of the app to an actual phone, you can either deploy
+to an individual device directly, or submit the app to the Google Play Store, and download it to
+any number of devices from there.
+
+### Deploying to a Phone
+
+1. Connect your Android phone to your computer via USB cable
+2. Enable USB debugging on your phone by going to Settings > Developer options > USB debugging (you may need to enable Developer options first by tapping on "Build number" in the "About phone" section of Settings multiple times)
+3. Open a terminal or command prompt and navigate to the project directory
+4. Run the command `npx react-native run-android --variant=release` to build and install the release version of the app on your phone
+5. Once the app is installed, you should be able to find it in your app drawer
+
+Note: If you encounter any issues while building or deploying the app, be sure to check the [React Native documentation](https://reactnative.dev/docs/running-on-device) or community forums for help.
+
+### Publishing to the Google Play Store
+
+ 1. Create a Google Play Developer account and pay the registration fee
+ 2. Generate a signing key for the app by following [these instructions](https://reactnative.dev/docs/signed-apk-android)
+ 3. Build a release version of the app by running the command `npx react-native run-android --variant=release` in the root project directory
+ 4. Once you have the release APK file, log in to your Google Play Developer Console and create a new app listing
+ 5. Upload your APK file and fill in the app details, such as the app name, description, screenshots, and pricing information
+ 6. Submit your app for review and wait for it to be approved
+
+It's important to note that publishing an app on the Google Play Store requires adherence to various policies and guidelines, so be sure to review these before submitting your app.
