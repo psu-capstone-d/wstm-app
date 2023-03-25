@@ -1,8 +1,14 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
-import {Pressable, ScrollView, StyleSheet, View} from 'react-native'
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  ToastAndroid,
+  View,
+} from 'react-native'
 
 import {Colors} from 'react-native/Libraries/NewAppScreen'
-import {useCourse, useCurrentActivity, useIsDarkMode} from 'src/hooks'
+import {useCurrentActivity, useIsDarkMode} from 'src/hooks'
 import Drawer from 'src/components/layout/Drawer'
 import {
   AppBar,
@@ -62,13 +68,19 @@ export const CourseScreen = () => {
   const dispatch = useAppDispatch()
   const drawerRef = useRef<DrawerLayout>(null)
   const isDarkMode = useIsDarkMode()
-  const course = useCourse()
   const {activity, module, next, prev} = useCurrentActivity()
 
   const [readyToAdvance, setReadyToAdvance] = useState(activity.type == 'text')
-  const submittedAnswer = useAppSelector(
-    state => state.submittedAnswers[activity.id],
-  )
+  const {
+    submittedAnswer,
+    ui: {drawerIsOpen, drawerIsIdle, drawerWillShow, devMode},
+  } = useAppSelector(state => ({
+    submittedAnswer: state.submittedAnswers[activity.id],
+    ui: state.ui,
+  }))
+  const [count, setCount] = useState(0)
+  const [timeoutId, setTimeoutId] = useState<number>(-1)
+
   useEffect(() => {
     setReadyToAdvance(
       activity.type == 'text' ||
@@ -79,9 +91,6 @@ export const CourseScreen = () => {
   const secondaryColor = usePaletteColor('secondary')
   const styles = useMemo(() => makeStyles(isDarkMode), [isDarkMode])
 
-  const {drawerIsOpen, drawerIsIdle, drawerWillShow} = useAppSelector(
-    state => state.ui,
-  )
   const drawerIsOpening = !drawerIsIdle && drawerWillShow
   const drawerIsOpenOrOpening = drawerIsOpen || drawerIsOpening
 
@@ -102,18 +111,42 @@ export const CourseScreen = () => {
     }
   }, [styles, drawerRef])
 
+  useEffect(() => {
+    return () => clearTimeout(timeoutId)
+  }, [timeoutId])
+
   const openDrawer = () => drawerRef.current && drawerRef.current.openDrawer()
   const closeDrawer = () => drawerRef.current && drawerRef.current.closeDrawer()
 
   const onQuestionComplete = (checked: CheckedAnswers) => {
-    dispatch(actions.saveCheckedAnswers({activityId: activity.id, checked}))
+    dispatch(actions.setCheckedAnswers({[activity.id]: checked}))
     setReadyToAdvance(true)
+  }
+
+  const onAppBarTouchEnd = () => {
+    clearTimeout(timeoutId)
+    if (count + 1 == 10) {
+      ToastAndroid.show(
+        `Developer mode ${devMode ? 'Disabled' : 'Enabled'}`,
+        ToastAndroid.SHORT,
+      )
+      dispatch(actions.toggleDevMode())
+      setCount(0)
+    } else {
+      setCount(count + 1)
+      setTimeoutId(
+        setTimeout(() => {
+          setCount(0)
+        }, 5000),
+      )
+    }
   }
 
   const topArea = (
     <AppBar
       key="top"
       centerTitle
+      onTouchEndCapture={onAppBarTouchEnd}
       title={module.title}
       subtitle={
         activity.type == 'text' || activity.type == 'question'
@@ -181,10 +214,17 @@ export const CourseScreen = () => {
     <>
       {isCourseComplete && (
         <AppBar
-          title={`${course.name} Complete!`}
+          title="Course Complete!"
           variant="bottom"
           color={secondaryColor.main}
           tintColor={secondaryColor.on}
+          trailing={props => (
+            <Button
+              title="View Results"
+              {...props}
+              onPress={() => dispatch(actions.setScreen('results'))}
+            />
+          )}
         />
       )}
     </>
